@@ -212,10 +212,33 @@ class Modulo(object):
     def setAmbient(self, ambient):
         self.ambient = ambient
 
+    '''
+    An Improved Model-Based Maximum Power Point
+    Tracker for Photovoltaic Panels
+    IEEE TRANSACTIONS ON INSTRUMENTATION AND MEASUREMENT, VOL. 63, NO. 1,
+    JANUARY 2014
+    Cristaldi, Faifer, Rossi, Toscani
+    '''
     def getVoc (self):
         T = self.temperatura(4)
+        VT = self.VT * T / constants.Tref
         return self.Voc + self.cTVoc*(T - constants.Tref) + \
-                   self.VT * math.log(self.ambient.Sa / constants.Sref)
+                   VT * math.log(self.ambient.Sa / constants.Sref)
+
+    '''
+      Parameter estimation of solar photovoltaic (PV) cells: A review
+      Renewable and Sustainable Energy Reviews 61 (2016) 354–371
+    '''
+    def getVmp(self):
+        T = self.temperatura(4)
+        VT = self.VT * T / constants.Tref
+        return self.Vmp + self.cTVoc*(T - constants.Tref) + \
+                   VT * math.log(self.ambient.Sa / constants.Sref)
+
+    def getImp(self):
+        T = self.temperatura(4)
+        return (self.Imp + self.cTIsc * (T - constants.Tref)) * self.ambient.Sa / constants.Sref
+
        
 class Ambient(object):
     def __init__(self, Ta, Sa, Va):
