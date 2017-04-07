@@ -150,9 +150,11 @@ class Modulo(object):
         str5 = (" eff: %3f cellArea: %.3f  PnArea: %.3f pEsp: %.3f\n")%(\
                 self.eff, self.cellArea, self.PnArea, self.pesoEsp)
 
+        str6 = ("VT: %.3f\n") %(self.VT)
 
 
-        return str1 + " " + str2  +  " " + str3 + " " + str4 + str5 + "\n"
+
+        return str1 + " " + str2  +  " " + str3 + " " + str4 + str5 + str6 + "\n"
 
     '''
     refs: 
