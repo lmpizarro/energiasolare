@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import math
+import constants
 
 eschedaTecnica1 = {"datiElettrici" :{"Pn":320, "Vmp": 54.7, "Imp": 5.86, "Voc": 64.8, "Isc": 6.27},
         "CoefficienteDiTemperatura":{"NOCT": 45, "Pn": -1.056, "Voc": -0.16848, "Isc":0.003135},
@@ -149,10 +150,57 @@ class Modulo(object):
 
 
         return str1 + " " + str2  +  " " + str3 + " " + str4 + str5 + "\n"
+
+    '''
+    refs: 
+       modelo = 1
+             Photovoltaic Module Simulink Model for a Stand-alone PV Sytem
+             Chen Qi, Zhu Ming  Physics Procedia 24 (2012) 94 – 100
+             Simple Modeling and Simulation of Photovoltaic Panels
+             Using Matlab/Simulink
+             Jangwoo Park*, Hong-geun Kim, Yongyun Cho, Changsun Shin
+             Advanced Science and Technology Letters
+             Vol.73 (FGCN 2014), pp.147-155
+             http://dx.doi.org/10.14257/astl.214.73.22
+       modelo = 2  wind speed = 0
+       modelo = 3
+            Study of the operating temperature of a PV module
+            Gail-Angee Migan
+            Dept. of Energy Sciences, Faculty of Engineering,
+            Lund University, Box 118, 22100 Lund, Sweden
+
+       modelo = 4  Kurtz  
+       modelo = 5  Koehl m-Si p-Si uc-Si
+            Wind effect on PV module temperature: Analysis of different
+            techniques for an accurate estimation
+            Energy Procedia 40 (2013) 77 – 86
+
+    '''
+    def temperatura (self, S, Ta, Va, modelo):
+        '''
+           S: is irradiance intensity ( W m2 );
+           Ta: ambient temperature (°C)
+           Va: local wind speed (m/s)
+
+        '''
+        if modelo == 1:
+           T = 31.2 + (0.25 * S /constants.Sn) + .899 * Ta - 1.3 * Va
+        elif modelo == 2:
+            T = Ta + 0.035 * S
+        elif modelo ==  3:
+            T = Ta + 0.32 * S / (8.91 + 2*Va)
+        elif modelo == 4:
+            T = Ta + S * math.exp(-3.473 - 0.0594 * Va)
+        elif modelo == 5:
+            U0 = 30.02
+            U1 = 6.28
+            T = Ta + S /(U0 + U1 * Va)
+        else:
+            T = Ta
+
+        return T 
         
 class OneDiodeModel(object):
-    qq = 1.6e-19 # electron charge  C
-    KK = 1.23e-23 # boltzman constant J / °K
     #{'Rsh': 62.5481, 'nref': 0.25, 'Rs': 0.733, 'I0': 9.84e-42, 'source':
     #        'Laudani', 'Iirr': 8.5794}
     def __init__(self,eschedaTecnica, model, T):
@@ -172,7 +220,7 @@ class OneDiodeModel(object):
         self.n = modelli["nref"]
         self.I0 = modelli["I0"]
         self.T = T
-        self.A = self.qq / (self.n * self.KK * self.T)
+        self.A = constants.qq / (self.n * constants.KK * self.T)
 
 
     def __str__(self):
@@ -213,8 +261,14 @@ def test01():
 
 if __name__ == '__main__':
     # Rs, Rsh, n, I0, T
-    T = 300
-    odm = OneDiodeModel(eschedaTecnica4, 0, T)
+    Ta = 30
+    Ws = 4
+    Ss = 1500
+
+    md4 = Modulo(eschedaTecnica4)
+    T = md4.temperatura(Ss, Ta, Ws, 4)
+
+    odm = OneDiodeModel(eschedaTecnica4, 0, T + 273.0)
 
     V = 0.0
     Il = 0.0
@@ -228,4 +282,8 @@ if __name__ == '__main__':
         print  ("%.3f %.3f %.3f %.3f %.3f")%(V, Il, Wp, Il2, Il2 * V)
         V = V + 0.01
 
-    print eschedaTecnica4["modelli"][0]     
+    print eschedaTecnica4["modelli"][0]
+
+    for i in range(1,6):
+        T = md4.temperatura(Ss, Ta, Ws, i)
+        print T
