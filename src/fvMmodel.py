@@ -133,6 +133,9 @@ class Modulo(object):
        
         self.eff = (self.Pn / self.area) / 10
 
+        self.VT = (2*self.Vmp - self.Voc)* (self.Isc - self.Imp)/\
+                  (self.Imp + (self.Isc - self.Imp)*math.log(1 - self.Imp/self.Isc))
+
 
 
     def __str__(self):
@@ -176,13 +179,17 @@ class Modulo(object):
             Energy Procedia 40 (2013) 77 – 86
 
     '''
-    def temperatura (self, S, Ta, Va, modelo):
+    def temperatura (self, modelo):
         '''
            S: is irradiance intensity ( W m2 );
            Ta: ambient temperature (°C)
            Va: local wind speed (m/s)
 
         '''
+        S = self.ambient.Sa
+        Ta = self.ambient.Ta
+        Va = self.ambient.Va
+
         if modelo == 1:
            T = 31.2 + (0.25 * S /constants.Sn) + .899 * Ta - 1.3 * Va
         elif modelo == 2:
@@ -199,7 +206,26 @@ class Modulo(object):
             T = Ta
 
         return T 
-        
+
+    def setAmbient(self, ambient):
+        self.ambient = ambient
+
+    def getVoc (self):
+        T = self.temperatura(4)
+        return self.Voc + self.cTVoc*(T - constants.Tref) + \
+                   self.VT * math.log(self.ambient.Sa / constants.Sref)
+       
+class Ambient(object):
+    def __init__(self, Ta, Sa, Va):
+        self.Ta = Ta
+        self.Sa = Sa
+        self.Va = Va
+
+
+    def __str__(self):
+        str_ = ("Ta: %.3f Sa: %.3f Va: %.3f")%(self.Ta, self.Sa, self.Va)
+
+
 class OneDiodeModel(object):
     #{'Rsh': 62.5481, 'nref': 0.25, 'Rs': 0.733, 'I0': 9.84e-42, 'source':
     #        'Laudani', 'Iirr': 8.5794}
@@ -265,8 +291,11 @@ if __name__ == '__main__':
     Ws = 4
     Ss = 1500
 
+    ambient = Ambient (Ta, Ss, Ws)
+
     md4 = Modulo(eschedaTecnica4)
-    T = md4.temperatura(Ss, Ta, Ws, 4)
+    md4.setAmbient(ambient)
+    T = md4.temperatura(4)
 
     odm = OneDiodeModel(eschedaTecnica4, 0, T + 273.0)
 
@@ -285,5 +314,13 @@ if __name__ == '__main__':
     print eschedaTecnica4["modelli"][0]
 
     for i in range(1,6):
-        T = md4.temperatura(Ss, Ta, Ws, i)
+        T = md4.temperatura(i)
         print T
+    T = -25
+    for i in range(10):
+        T = T + 5 
+        ambient.Ta = T
+        md4.setAmbient(ambient)
+        print (T, md4.getVoc())
+
+    print(md4)        
