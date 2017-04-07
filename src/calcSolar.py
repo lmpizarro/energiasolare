@@ -3,6 +3,9 @@ import math
 '''
 http://www.itacanet.org/the-sun-as-a-source-of-energy/part-3-calculating-solar-angles/
 http://www.pveducation.org/pvcdrom/properties-sunlight/solar-radiation-tilted-surface
+
+calc solar angles 
+
 '''
 Isc = 1367 # W/m2
 TO_RAD = math.pi / 180.0 
