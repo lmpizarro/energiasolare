@@ -23,6 +23,22 @@ eschedaTecnica3 = {"datiElettrici" :{"Pn":280, "Vmp": 32.7, "Imp": 8.57, "Voc": 
         "marca": "Benq", "modello":"Aer PM060M01"}
 
 
+eschedaTecnica4 = {"datiElettrici" :{"Pn":235, "Vmp": 29.6, "Imp": 7.94, \
+                                     "Voc": 36.8, "Isc": 8.40},
+        "CoefficienteDiTemperatura":{"NOCT": 45, "Pn": -1.1985, "Voc": -0.12512,\
+                "Isc":0.00294},
+        "CaratteristicheMeccaniche":{"lungh":1.667, "largh":1.000, "alt":0.045,\
+                "cell":60, "peso": 19.0},
+        "marca": "BP Solar", "modello":"Q series",\
+        "modelli": [{"Rs": 0.733, "nref": 0.25, "Rsh": 62.5481, "I0": 9.84E-42,
+            "Iirr":8.5794, "source": "Laudani"},
+            {"Rs": 0.6226, "nref": 0.44, "Rsh": 76.6973, "I0": 1.2434E-23,
+                "Iirr":8.5488, "source": "Laudani"}
+            ]}
+
+
+
+
 """
  riferito alle condizioni standard IEC
  temperatura della cella fotovoltaica pari a 25°C
