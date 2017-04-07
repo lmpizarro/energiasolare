@@ -239,6 +239,17 @@ class Modulo(object):
         T = self.temperatura(4)
         return (self.Imp + self.cTIsc * (T - constants.Tref)) * self.ambient.Sa / constants.Sref
 
+    '''
+    Photovoltaic Module Simulink Model for a Stand-alone PV
+    Physics Procedia 24 (2012) 94 – 100
+    Chen Qi, Zhu Ming
+    '''
+    def getIph(self):
+        T = self.temperatura(4)
+        return (self.Isc + self.cTIsc * (T - constants.Tref)) * self.ambient.Sa / constants.Sref
+
+
+
        
 class Ambient(object):
     def __init__(self, Ta, Sa, Va):
