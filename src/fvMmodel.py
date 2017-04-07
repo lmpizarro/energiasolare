@@ -153,7 +153,9 @@ class Modulo(object):
 class OneDiodeModel(object):
     qq = 1.6e-19 # electron charge  C
     KK = 1.23e-23 # boltzman constant J / °K
-    def __init__(self, Ns, Rs, Rsh, n, I0, T):
+    #{'Rsh': 62.5481, 'nref': 0.25, 'Rs': 0.733, 'I0': 9.84e-42, 'source':
+    #        'Laudani', 'Iirr': 8.5794}
+    def __init__(self,eschedaTecnica, model, T):
         '''
         Ns: number of cells in serie
         Rs: R serie Ohm 
@@ -162,11 +164,13 @@ class OneDiodeModel(object):
         n: ideality factor
         T : ° Kelvin
         '''
+        Ns = eschedaTecnica["CaratteristicheMeccaniche"]["cell"]
+        modelli = eschedaTecnica["modelli"][model]
         self.Ns = Ns
-        self.Rs = Rs
-        self.Rsh = Rsh
-        self.n = n
-        self.I0 = I0
+        self.Rs = modelli["Rs"]
+        self.Rsh = modelli["Rsh"]
+        self.n = modelli["nref"]
+        self.I0 = modelli["I0"]
         self.T = T
         self.A = self.qq / (self.n * self.KK * self.T)
 
@@ -209,7 +213,8 @@ def test01():
 
 if __name__ == '__main__':
     # Rs, Rsh, n, I0, T
-    odm = OneDiodeModel(60, 0.7, 62.0, 0.25, 9.8e-42, 300.0)
+    T = 300
+    odm = OneDiodeModel(eschedaTecnica4, 0, T)
 
     V = 0.0
     Il = 0.0
@@ -222,3 +227,5 @@ if __name__ == '__main__':
         Wp = V * Il
         print  ("%.3f %.3f %.3f %.3f %.3f")%(V, Il, Wp, Il2, Il2 * V)
         V = V + 0.01
+
+    print eschedaTecnica4["modelli"][0]     
