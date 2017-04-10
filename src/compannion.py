@@ -7,7 +7,7 @@ import constants
 Gp = 1.0 / 116.140
 Gs = 1.0 / 0.4759
 I0 = 5.689E-14
-nref = 0.815
+nref = 0.74
 Iirr = 8.51
 Ns = 60
 T = 300
@@ -15,19 +15,17 @@ Vt = Ns * nref * T  * constants.KK / constants.qq
 Vmpp = 29.6
 Impp = 7.94
 Gmpp = Impp / Vmpp
+Isc = 8.4
+Voc = 36.8
 
 str1 = ("Gmpp %.3f Gp: %.3f, I0: %.3e, nref: %.3f, Iirr: %.3f, Ns: %.3f Vt: %.3f")% \
         (Gmpp, Gp, I0, nref, Iirr, Ns, Vt) 
     
 print str1
 
-vd = 60.0
+vd = 10.0
 id_ = 0.0
-
 Gd = (I0 / Vt) * math.exp(vd / Vt)
-
-# for mpp
-gl = Gs * Gmpp / (Gs + Gmpp)
 
 
 #print ("Gd: %.3e id: %.3e v1: %.3e \n")%(Gd, id_, v1)
@@ -36,11 +34,15 @@ gl = Gs * Gmpp / (Gs + Gmpp)
 def mppCircuit():
     global vd, Gd, id_
 
-    v1 = (Iirr / 1.00 - (id_ - Gd * vd)) / (Gd + Gp + gl)
+    gl = Gs * Gmpp / (Gs + Gmpp)
+
+
+    v1 = (Iirr - (id_ - Gd * vd)) / (Gd + Gp + gl)
+
     for i in range(1000):
         err = vd
         id_ = I0 * (math.exp(vd / Vt) -  1)
-        v1 = (Iirr /1.00 - (id_ - Gd * vd)) / (Gd + Gp + gl)
+        v1 = (Iirr - (id_ - Gd * vd)) / (Gd + Gp + gl)
         vd = v1
         Gd = (I0 / Vt) * math.exp(vd / Vt)
         err = err - vd
@@ -50,6 +52,11 @@ def mppCircuit():
             break
 
     print ("MPP Gd: %.3e id: %.3e v1: %.3e il: %.3e err:%.3e")%(Gd, id_, v1, il, err)
+
+    diffV = Vmpp - v1
+    diffI = Impp - il
+
+    print diffV, diffI
 
 
 def shortCircuit():
@@ -71,6 +78,11 @@ def shortCircuit():
 
 
     print ("SHORT Gd: %.3e id: %.3e v1: %.3e il: %.3e err:%.3e")%(Gd, id_, v1, il, err)
+
+    diff = Isc - il 
+
+    print diff
+
 
 
 def openCircuit():
@@ -99,6 +111,10 @@ def openCircuit():
 
 
     print ("OPEN Gd: %.3e id: %.3e v1: %.3e err:%.3e")%(Gd, id_, v1, err)
+
+    diff = Voc - v1
+
+    print diff
 
 
 
