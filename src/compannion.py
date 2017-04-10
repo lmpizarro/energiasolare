@@ -21,63 +21,88 @@ str1 = ("Gmpp %.3f Gp: %.3f, I0: %.3e, nref: %.3f, Iirr: %.3f, Ns: %.3f Vt: %.3f
     
 print str1
 
+vd = 60.0
+id_ = 0.0
+
+Gd = (I0 / Vt) * math.exp(vd / Vt)
+
+# for mpp
+gl = Gs * Gmpp / (Gs + Gmpp)
+
+
+#print ("Gd: %.3e id: %.3e v1: %.3e \n")%(Gd, id_, v1)
+
+
+def mppCircuit():
+    global vd, Gd, id_
+
+    v1 = (Iirr / 1.00 - (id_ - Gd * vd)) / (Gd + Gp + gl)
+    for i in range(1000):
+        err = vd
+        id_ = I0 * (math.exp(vd / Vt) -  1)
+        v1 = (Iirr /1.00 - (id_ - Gd * vd)) / (Gd + Gp + gl)
+        vd = v1
+        Gd = (I0 / Vt) * math.exp(vd / Vt)
+        err = err - vd
+        il = vd * gl
+        
+        if math.fabs(err) < 0.0001:
+            break
+
+    print ("MPP Gd: %.3e id: %.3e v1: %.3e il: %.3e err:%.3e")%(Gd, id_, v1, il, err)
 
 
 def shortCircuit():
-    vd = 60
-    id_ = 0.0
-
-    Gd = (I0 / Vt) * math.exp(vd / Vt)
+   
+    global vd, Gd, id_
 
     v1 = (Iirr / 1.00 - (id_ - Gd * vd)) / (Gd + Gp + Gs)
-
-    print ("Gd: %.3e id: %.3e v1: %.3e")%(Gd, id_, v1)
-
     for i in range(1000):
         err = vd
-        id_ = I0 * (math.exp(vd / Vt))
-        v1 = (Iirr /1.00 - (id_ - Gd * vd)) / (Gd + Gp + Gs)
+        id_ = I0 * (math.exp(vd / Vt) - 1)
+        v1 = (Iirr - (id_ - Gd * vd)) / (Gd + Gp + Gs)
         vd = v1
         Gd = (I0 / Vt) * math.exp(vd / Vt)
         err = err - vd
         il = vd * Gs
         
-        print ("Gd: %.3e id: %.3e v1: %.3e il: %.3e err:%.3e")%(Gd, id_, v1, il, err)
         if math.fabs(err) < 0.0001:
             break
 
 
-    print i        
+    print ("SHORT Gd: %.3e id: %.3e v1: %.3e il: %.3e err:%.3e")%(Gd, id_, v1, il, err)
 
 
 def openCircuit():
 
+    #global vd, Gd, id_
 
-    vd = 60
+    vd = 60.0
     id_ = 0.0
 
     Gd = (I0 / Vt) * math.exp(vd / Vt)
+ 
 
     v1 = (Iirr / 1.00 - (id_ - Gd * vd)) / (Gd + Gp)
 
-    print ("Gd: %.3e id: %.3e v1: %.3e")%(Gd, id_, v1)
-
     for i in range(1000):
         err = vd
-        id_ = I0 * (math.exp(vd / Vt))
-        v1 = (Iirr /1.00 - (id_ - Gd * vd)) / (Gd + Gp)
+        id_ = I0 * (math.exp(vd / Vt) - 1)
+        v1 = (Iirr - (id_ - Gd * vd)) / (Gd + Gp)
         vd = v1
+        print vd
         Gd = (I0 / Vt) * math.exp(vd / Vt)
         err = err - vd
         
-        print ("Gd: %.3e id: %.3e v1: %.3e err:%.3e")%(Gd, id_, v1, err)
         if math.fabs(err) < 0.0001:
             break
 
 
-    print i        
+    print ("OPEN Gd: %.3e id: %.3e v1: %.3e err:%.3e")%(Gd, id_, v1, err)
 
 
 
 if __name__ == '__main__':
+    mppCircuit()
     shortCircuit()
+    openCircuit()
