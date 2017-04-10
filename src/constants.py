@@ -6,3 +6,4 @@ qq = 1.6e-19 # electron charge  C
 KK = 1.23e-23 # boltzman constant J / °K
 Sref = Sn # W / m2
 Tref = 25 # °C
+Vdiode = 0.6

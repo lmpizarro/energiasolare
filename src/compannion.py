@@ -6,8 +6,12 @@ import constants
 
 Gp = 1.0 / 116.140
 Gs = 1.0 / 0.4759
+Gp = 1.0 / 80.140
+Gs = 1.0 / 0.9059
+
+
 I0 = 5.689E-14
-nref = 0.74
+nref = 0.8
 Iirr = 8.51
 Ns = 60
 T = 300
@@ -102,7 +106,6 @@ def openCircuit():
         id_ = I0 * (math.exp(vd / Vt) - 1)
         v1 = (Iirr - (id_ - Gd * vd)) / (Gd + Gp)
         vd = v1
-        print vd
         Gd = (I0 / Vt) * math.exp(vd / Vt)
         err = err - vd
         

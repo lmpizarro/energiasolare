@@ -60,6 +60,35 @@ class modelloB1(object):
         str1 = ("Rsh: %.3f Rs: %.3f IL: %.3f\n")% (self.Rsh, self.Rs, self.Il)
         return str1
 
+class modelloB2(object):
+    def __init__(self, m, ambient):
+
+        deltav = m.Voc - m.Vmp
+        deltai = m.Isc - m.Imp
+
+        self.Rs = deltav / m.Imp
+
+        self.Rsh = m.Voc / deltai
+
+        self.T =  ambient.Ta + 273
+
+        self.Vt = constants.KK * self.T / constants.qq
+
+        N = constants.Vdiode / self.Vt
+
+        self.Vt = m.Ns * self.Vt
+
+        self.nref = (m.Voc - self.Vt * 26 ) /self.Vt
+
+
+    def __str__(self):    
+        str1 = ("Rsh: %.3f Rs: %.3f nref: %.3f\n")%\
+                (self.Rsh, self.Rs,self.nref)
+        return str1
+
+
+
+
 class cavio(object):
    def __init__(self, l, s, m):
        self.l = l
@@ -124,6 +153,7 @@ class Modulo(object):
         self.largh = esp["CaratteristicheMeccaniche"]["largh"]
         self.alt = esp["CaratteristicheMeccaniche"]["alt"]
         self.peso = esp["CaratteristicheMeccaniche"]["peso"]
+        self.Ns = esp["CaratteristicheMeccaniche"]["cell"]
 
         self.area = self.lungh * self.largh
         self.vol = self.area * self.alt 
@@ -321,7 +351,40 @@ def test01():
     ca = cavio(100, 32.5, "Cu")
     print ( ca.R(70))
 
-if __name__ == '__main__':
+def test02():
+
+    Ta = 30
+    Ws = 4
+    Ss = 1500
+
+    ambient = Ambient (Ta, Ss, Ws)
+
+
+    md1 = Modulo(eschedaTecnica4)
+    md2 = Modulo(eschedaTecnica2)
+    md3 = Modulo(eschedaTecnica3)
+    print (md1)
+    print (md2)
+    print (md3)
+
+    mbcMd3 = modelloB2(md1, ambient)
+    print(mbcMd3)
+
+    mbcMd3 = modelloB2(md2, ambient)
+    print(mbcMd3)
+
+    mbcMd3 = modelloB2(md3, ambient)
+    print(mbcMd3)
+    '''
+    cel1 = cella (md1)
+    print (cel1)
+
+    mbc = modelloB2(cel1, ambient)
+
+    print (mbc)
+    '''
+
+def testOneDiodeModel():    
     # Rs, Rsh, n, I0, T
     Ta = 30
     Ws = 4
@@ -360,3 +423,6 @@ if __name__ == '__main__':
         print (T, md4.getVoc())
 
     print(md4)        
+
+if __name__ == '__main__':
+    test02()
