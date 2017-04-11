@@ -79,14 +79,16 @@ class Companion(object):
             diffI = 100 * (self.Imp - il)/ self.Imp
             print ("error calc MPP: %.3e error pc Vmp: %.3f error pc Imp: %.3f")%(err, diffV, diffI)
         if circuit == "short":
-            diffI = 100 * (self.Imp - il)/ self.Imp
-            print ("error calc SHORT: %.3e  error pc Imp: %.3f")%(err, diffI)
+            diffI = 100 * (self.Isc - il)/ self.Isc
+            print ("error calc SHORT: %.3e  error pc Isc: %.3f")%(err, diffI)
         if circuit == "open":
-            diffV = 100 * (self.Vmp - v1) / self.Vmp
-            print ("error calc OPEN: %.3e  error pc Vmp: %.3f")%(err, diffV)
+            diffV = 100 * (self.Voc - v1) / self.Voc
+            print ("error calc OPEN: %.3e  error pc Voc: %.3f")%(err, diffV)
 
 
-
+    def solveGl(self, vd_init, gl):
+        self.gl = gl
+        return self.solver(vd_init)
 
     def __str__(self):
         str1 = (" MODEL     Gp: %.3e Gs: %.3e I0: %.3e nref: %.3e Iirr %.3e T: %.3f Ns: %d ")%\
@@ -99,15 +101,23 @@ class Companion(object):
 def testCompanion():
 
     indexModel = 4
-    T = 25
-
+    T = 20
+    
+    '''
     for i in range(5):
         indexModel = i
         mod1 = Companion(bdModulos.eschedaTecnica4, indexModel, T)
         mod1.mppCircuit(40, "mpp")
         mod1.mppCircuit(40, "open")
         mod1.mppCircuit(40, "short")
+    '''
 
+    mod1 = Companion(bdModulos.eschedaTecnica4, indexModel, T)
+    gl = 0
+    for i in range (80):
+       (v1, i1, err) =  mod1.solveGl(40, gl)
+       print  v1, i1
+       gl = gl + 0.1
 
 if __name__ == '__main__':
     testCompanion()
