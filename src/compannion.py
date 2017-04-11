@@ -114,10 +114,10 @@ def testCompanion():
 
     mod1 = Companion(bdModulos.eschedaTecnica4, indexModel, T)
     gl = 0
-    for i in range (80):
+    for i in range (90):
        (v1, i1, err) =  mod1.solveGl(40, gl)
-       print  v1, i1
-       gl = gl + 0.1
+       print  gl, v1, i1
+       gl = gl + 0.01
 
 if __name__ == '__main__':
     testCompanion()
