@@ -5,15 +5,13 @@ import math
 import constants
 import bdModulos
 
-Gp = 1.0 / 116.140
-Gs = 1.0 / 0.4759
-Gp = 1.0 / 80.140
-Gs = 1.0 / 0.9059
+Gp = 1.0 / 62.5481
+Gs = 1.0 / 0.733
 
 
-I0 = 5.689E-14
-nref = 0.8
-Iirr = 8.51
+I0 = 9.84-42
+nref = 0.25
+Iirr = 8.5794
 Ns = 60
 T = 300
 Vt = Ns * nref * T  * constants.KK / constants.qq
@@ -58,10 +56,11 @@ def mppCircuit():
 
     print ("MPP Gd: %.3e id: %.3e v1: %.3e il: %.3e err:%.3e")%(Gd, id_, v1, il, err)
 
-    diffV = Vmpp - v1
-    diffI = Impp - il
+    diffV = 100 * (Vmpp - v1) / Vmpp
+    diffI = 100 * (Impp - il)/ Impp
 
-    print diffV, diffI
+    print ("error calc: %.3e error pc Vmp: %.3f error pc Imp: %.3f")%(err, diffV, diffI)
+
 
 
 def shortCircuit():
@@ -151,6 +150,8 @@ class Companion(object):
 
         self.Gmpp = self.Imp / self.Vmp 
 
+
+
     def mppCircuit(self, vd_init):
         vd = vd_init 
         id_ = 0.0
@@ -191,13 +192,15 @@ class Companion(object):
         return str1 + str2
 
 def testCompanion():
-    indexModel = 0
+    indexModel = 1
     T = 25
     mod1 = Companion(bdModulos.eschedaTecnica4, indexModel, T)
     print mod1
 
-    mod1.mppCircuit(10)
-    pass
+    mod1.mppCircuit(0)
+
+    print 
+    test01()
 
 if __name__ == '__main__':
     testCompanion()
