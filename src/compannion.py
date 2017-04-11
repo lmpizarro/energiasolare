@@ -151,6 +151,36 @@ class Companion(object):
 
         self.Gmpp = self.Imp / self.Vmp 
 
+    def mppCircuit(self, vd_init):
+        vd = vd_init 
+        id_ = 0.0
+        Gd = (self.I0 / self.Vt) * math.exp(vd / self.Vt)
+
+        gl = self.Gs * self.Gmpp / (self.Gs + self.Gmpp)
+
+
+        v1 = (self.Iirr - (id_ - Gd * vd)) / (Gd + self.Gp + gl)
+
+        for i in range(1000):
+            err = vd
+            id_ = self.I0 * (math.exp(vd / self.Vt) -  1)
+            v1 = (self.Iirr - (id_ - Gd * vd)) / (Gd + self.Gp + gl)
+            vd = v1
+            Gd = (self.I0 / self.Vt) * math.exp(vd / self.Vt)
+            err = err - vd
+            il = vd * gl
+        
+            if math.fabs(err) < 0.0001:
+                break
+
+        print ("MPP Gd: %.3e id: %.3e v1: %.3e il: %.3e err:%.3e")%(Gd, id_, v1, il, err)
+
+        diffV = 100 * (self.Vmp - v1) / self.Vmp
+        diffI = 100 * (self.Imp - il)/ self.Imp
+
+        print ("error calc: %.3e error pc Vmp: %.3f error pc Imp: %.3f")%(err, diffV, diffI)
+
+
 
     def __str__(self):
         str1 = (" MODEL     Gp: %.3e Gs: %.3e I0: %.3e nref: %.3e Iirr %.3e T: %.3f Ns: %d ")%\
@@ -165,6 +195,8 @@ def testCompanion():
     T = 25
     mod1 = Companion(bdModulos.eschedaTecnica4, indexModel, T)
     print mod1
+
+    mod1.mppCircuit(10)
     pass
 
 if __name__ == '__main__':
