@@ -55,7 +55,7 @@ class Companion(object):
             err = err - vd
             il = vd * self.gl
         
-            if math.fabs(err) < 0.0001:
+            if math.fabs(err) < 0.00001:
                 break
         return (v1, il, err)
 
@@ -103,7 +103,6 @@ def testCompanion():
     indexModel = 4
     T = 20
     
-    '''
     for i in range(5):
         indexModel = i
         mod1 = Companion(bdModulos.eschedaTecnica4, indexModel, T)
@@ -119,5 +118,6 @@ def testCompanion():
        print  gl, v1, i1
        gl = gl + 0.01
 
+    '''
 if __name__ == '__main__':
     testCompanion()

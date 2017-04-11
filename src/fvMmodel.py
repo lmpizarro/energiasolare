@@ -35,6 +35,12 @@ class modelloB2(object):
 
         self.Rsh = m.Voc / deltai
 
+        self.Rs2 = deltav / m.Isc
+
+        self.Rsh2 = m.Vmp / deltai
+
+        self.Ii = m.Isc + deltai * 0.1
+
         self.T =  ambient.Ta + 273
 
         self.Vt = constants.KK * self.T / constants.qq
@@ -47,8 +53,8 @@ class modelloB2(object):
 
 
     def __str__(self):    
-        str1 = ("Rsh: %.3f Rs: %.3f nref: %.3f\n")%\
-                (self.Rsh, self.Rs,self.nref)
+        str1 = (" Rsh2: %.3f Rs2: %.3f Rsh: %.3f Rs: %.3f nref: %.3f Ii: %.3f\n")%\
+                (self.Rsh2, self.Rs2, self.Rsh, self.Rs,self.nref, self.Ii)
         return str1
 
 
@@ -335,11 +341,16 @@ def test02():
     mbcMd3 = modelloB2(md1, ambient)
     print(mbcMd3)
 
+    print
+
     mbcMd3 = modelloB2(md2, ambient)
     print(mbcMd3)
 
+    print
+
     mbcMd3 = modelloB2(md3, ambient)
     print(mbcMd3)
+
     '''
     cel1 = cella (md1)
     print (cel1)
