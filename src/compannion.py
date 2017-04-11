@@ -3,6 +3,7 @@
 
 import math
 import constants
+import bdModulos
 
 Gp = 1.0 / 116.140
 Gs = 1.0 / 0.4759
@@ -120,8 +121,51 @@ def openCircuit():
     print diff
 
 
-
-if __name__ == '__main__':
+def test01 ():
     mppCircuit()
     shortCircuit()
     openCircuit()
+
+class Companion(object):
+    def __init__(self, modulo, index, Temp):
+        self.modulo = modulo
+        self.modelli = self.modulo["modelli"][index]
+
+
+        self.Gp  = 1.0 / self.modelli["Rsh"] 
+        self.Gs  = 1.0 / self.modelli["Rs"] 
+        self.I0  = self.modelli["I0"]
+        self.nref  = self.modelli["nref"]
+        self.Iirr  = self.modelli["Iirr"]
+
+        self.Ns = self.modulo["CaratteristicheMeccaniche"]["cell"] 
+        
+        self.Temp = Temp + 273
+        self.Vt = self.Ns * self.nref * self.Temp  * constants.KK / constants.qq
+
+        self.Imp = self.modulo["datiElettrici"]["Imp"]
+        self.Vmp = self.modulo["datiElettrici"]["Vmp"]
+   
+        self.Isc = self.modulo["datiElettrici"]["Isc"]
+        self.Voc = self.modulo["datiElettrici"]["Voc"]
+
+        self.Gmpp = self.Imp / self.Vmp 
+
+
+    def __str__(self):
+        str1 = (" MODEL     Gp: %.3e Gs: %.3e I0: %.3e nref: %.3e Iirr %.3e T: %.3f Ns: %d ")%\
+                (self.Gp, self.Gs, self.I0, self.nref, self.Iirr, self.Temp, self.Ns)
+
+        str2 = ("\n MODULLO   Voc: %.3f Isc: %.3f Imp: %.3f Vmp: %.3f Gmpp: %.3f Vt: %.3f")%\
+                (self.Voc, self.Isc, self.Imp, self.Vmp, self.Gmpp, self.Vt)        
+        return str1 + str2
+
+def testCompanion():
+    indexModel = 0
+    T = 25
+    mod1 = Companion(bdModulos.eschedaTecnica4, indexModel, T)
+    print mod1
+    pass
+
+if __name__ == '__main__':
+    testCompanion()
