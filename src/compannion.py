@@ -24,7 +24,7 @@ Voc = 36.8
 str1 = ("Gmpp %.3f Gp: %.3f, I0: %.3e, nref: %.3f, Iirr: %.3f, Ns: %.3f Vt: %.3f")% \
         (Gmpp, Gp, I0, nref, Iirr, Ns, Vt) 
     
-print str1
+#print str1
 
 vd = 10.0
 id_ = 0.0
@@ -151,35 +151,59 @@ class Companion(object):
         self.Gmpp = self.Imp / self.Vmp 
 
 
+    def getId(self, vd):
+        return self.I0 * (math.exp(vd / self.Vt) -  1)
 
-    def mppCircuit(self, vd_init):
+    def getGd(self, vd):
+        return (self.I0 / self.Vt) * math.exp(vd / self.Vt)
+
+
+    def solver (self, vd_init):
         vd = vd_init 
-        id_ = 0.0
-        Gd = (self.I0 / self.Vt) * math.exp(vd / self.Vt)
+        id_ = self.getId(vd) 
+        Gd = self.getGd(vd) 
 
-        gl = self.Gs * self.Gmpp / (self.Gs + self.Gmpp)
-
-
-        v1 = (self.Iirr - (id_ - Gd * vd)) / (Gd + self.Gp + gl)
+        v1 = (self.Iirr - (id_ - Gd * vd)) / (Gd + self.Gp + self.gl)
 
         for i in range(1000):
             err = vd
-            id_ = self.I0 * (math.exp(vd / self.Vt) -  1)
-            v1 = (self.Iirr - (id_ - Gd * vd)) / (Gd + self.Gp + gl)
+            id_ = self.getId(vd) 
+            v1 = (self.Iirr - (id_ - Gd * vd)) / (Gd + self.Gp + self.gl)
             vd = v1
-            Gd = (self.I0 / self.Vt) * math.exp(vd / self.Vt)
+            Gd = self.getGd(vd) 
             err = err - vd
-            il = vd * gl
+            il = vd * self.gl
         
             if math.fabs(err) < 0.0001:
                 break
+        return (v1, il, err)
 
-        print ("MPP Gd: %.3e id: %.3e v1: %.3e il: %.3e err:%.3e")%(Gd, id_, v1, il, err)
+    def mppCircuit(self, vd_init, circuit):
 
-        diffV = 100 * (self.Vmp - v1) / self.Vmp
-        diffI = 100 * (self.Imp - il)/ self.Imp
+        if circuit == "mpp":
+            self.gl = self.Gs * self.Gmpp / (self.Gs + self.Gmpp)
+        elif circuit == "short":
+            self.gl = self.Gs
+        elif circuit == "open":
+            self.gl = 0.0
 
-        print ("error calc: %.3e error pc Vmp: %.3f error pc Imp: %.3f")%(err, diffV, diffI)
+
+        (v1, il, err) = self.solver(vd_init)
+
+        #print ("MPP  v1: %.3e il: %.3e err:%.3e")%(v1, il, err)
+
+
+        if circuit == "mpp":
+            diffV = 100 * (self.Vmp - v1) / self.Vmp
+            diffI = 100 * (self.Imp - il)/ self.Imp
+            print ("error calc MPP: %.3e error pc Vmp: %.3f error pc Imp: %.3f")%(err, diffV, diffI)
+        if circuit == "short":
+            diffI = 100 * (self.Imp - il)/ self.Imp
+            print ("error calc SHORT: %.3e  error pc Imp: %.3f")%(err, diffI)
+        if circuit == "open":
+            diffV = 100 * (self.Vmp - v1) / self.Vmp
+            print ("error calc OPEN: %.3e  error pc Vmp: %.3f")%(err, diffV)
+
 
 
 
@@ -197,10 +221,10 @@ def testCompanion():
     mod1 = Companion(bdModulos.eschedaTecnica4, indexModel, T)
     print mod1
 
-    mod1.mppCircuit(0)
+    mod1.mppCircuit(30, "mpp")
+    mod1.mppCircuit(30, "open")
+    mod1.mppCircuit(30, "short")
 
-    print 
-    test01()
 
 if __name__ == '__main__':
     testCompanion()

@@ -28,7 +28,14 @@ eschedaTecnica4 = {"datiElettrici" :{"Pn":235, "Vmp": 29.6, "Imp": 7.94, \
         "modelli": [{"Rs": 0.733, "nref": 0.25, "Rsh": 62.5481, "I0": 9.84E-42,
             "Iirr":8.5794, "source": "Laudani"},
             {"Rs": 0.6226, "nref": 0.44, "Rsh": 76.6973, "I0": 1.2434E-23,
-                "Iirr":8.5488, "source": "Laudani"}
+                "Iirr":8.5488, "source": "Laudani"},
+            {"Rs": 0.4759, "nref": 0.74, "Rsh": 116.1465, "I0": 5.689E-14,
+                "Iirr":8.5147, "source": "Laudani"},
+            {"Rs": 0.3496, "nref": 1.04, "Rsh": 229.2422, "I0": 7.021E-10,
+                "Iirr":8.4929, "source": "Laudani"},
+            {"Rs": 0.2371, "nref": 1.34, "Rsh": 4393.8, "I0": 1.2857E-7,
+                "Iirr":8.4805, "source": "Laudani"}
+
             ]}
 
 
