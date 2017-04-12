@@ -47,14 +47,31 @@ class modelloB2(object):
 
         N = constants.Vdiode / self.Vt
 
+
         self.Vt = m.Ns * self.Vt
 
-        self.nref = (m.Voc - self.Vt * 26 ) /self.Vt
+        #self.nref = (m.Voc - self.Vt * N ) / (self.Vt * N)
+
+        self.nref = m.Voc / (self.Vt * N)
+
+        '''
+        Parameter estimation of solar photovoltaic (PV) cells: A review
+        Renewable and Sustainable Energy Reviews 61 (2016) 354–371
+        A. Rezaee Jordehi 
+        '''
+        def I0():
+            den = math.exp ((self.Rs * m.Isc) / self.Vt) + math.exp(m.Voc /\
+                    self.Vt)
+            I0 = m.Isc / den
+            return  I0 
+
+        self.I0 = I0()   
+
 
 
     def __str__(self):    
-        str1 = (" Rsh2: %.3f Rs2: %.3f Rsh: %.3f Rs: %.3f nref: %.3f Ii: %.3f\n")%\
-                (self.Rsh2, self.Rs2, self.Rsh, self.Rs,self.nref, self.Ii)
+        str1 = ("Rsh: %.3f Rs: %.3f nref: %.3f Ii: %.3f %.3e\n")%\
+                (self.Rsh, self.Rs,self.nref, self.Ii, self.I0)
         return str1
 
 
