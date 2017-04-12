@@ -4,6 +4,7 @@
 import math
 import constants
 import bdModulos
+import fvMmodel
 
 
 class Companion(object):
@@ -119,5 +120,27 @@ def testCompanion():
        gl = gl + 0.01
 
     '''
+
+def testCompanionB2():
+
+    indexModel = 4
+    Ta = 20
+    Ws = 4
+    Ss = 1500
+
+    ambient = fvMmodel.Ambient (Ta, Ss, Ws)
+
+    md1 = fvMmodel.Modulo(bdModulos.eschedaTecnica4)
+
+    print (md1)
+    mbcMd3 = fvMmodel.modelloB2(md1, ambient)
+    print(mbcMd3)
+
+    mod1 = Companion(md1.esp, 0, Ta)
+    mod1.mppCircuit(40, "mpp")
+    mod1.mppCircuit(40, "open")
+    mod1.mppCircuit(40, "short")
+
+
 if __name__ == '__main__':
-    testCompanion()
+    testCompanionB2()

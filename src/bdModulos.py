@@ -35,9 +35,4 @@ eschedaTecnica4 = {"datiElettrici" :{"Pn":235, "Vmp": 29.6, "Imp": 7.94, \
                 "Iirr":8.4929, "source": "Laudani"},
             {"Rs": 0.2371, "nref": 1.34, "Rsh": 4393.8, "I0": 1.2857E-7,
                 "Iirr":8.4805, "source": "Laudani"}
-
             ]}
-
-
-
-

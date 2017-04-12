@@ -45,7 +45,7 @@ class modelloB2(object):
 
         self.Vt = constants.KK * self.T / constants.qq
 
-        N = constants.Vdiode / self.Vt
+        N = constants.Vthre / self.Vt
 
 
         self.Vt = m.Ns * self.Vt
@@ -53,6 +53,7 @@ class modelloB2(object):
         #self.nref = (m.Voc - self.Vt * N ) / (self.Vt * N)
 
         self.nref = m.Voc / (self.Vt * N)
+
 
         '''
         Parameter estimation of solar photovoltaic (PV) cells: A review
@@ -65,9 +66,16 @@ class modelloB2(object):
             I0 = m.Isc / den
             return  I0 
 
-        self.I0 = I0()   
+        self.I0 = I0() 
 
+        m.esp["modelli"] = []
 
+        
+        m.esp["modelli"].append({"Rs":self.Rs, "Rsh": self.Rsh, "nref": self.nref,\
+                "source": "B2", "Iirr": self.Ii, "I0": self.I0})
+         
+
+        print m.esp
 
     def __str__(self):    
         str1 = ("Rsh: %.3f Rs: %.3f nref: %.3f Ii: %.3f %.3e\n")%\
@@ -339,7 +347,7 @@ def test01():
     ca = cavio(100, 32.5, "Cu")
     print ( ca.R(70))
 
-def test02():
+def testB2():
 
     Ta = 30
     Ws = 4
@@ -347,23 +355,26 @@ def test02():
 
     ambient = Ambient (Ta, Ss, Ws)
 
-
     md1 = Modulo(bdModulos.eschedaTecnica4)
-    md2 = Modulo(bdModulos.eschedaTecnica2)
-    md3 = Modulo(bdModulos.eschedaTecnica3)
-    print (md1)
-    print (md2)
-    print (md3)
 
+    print (md1)
     mbcMd3 = modelloB2(md1, ambient)
     print(mbcMd3)
 
-    print
+
+    md2 = Modulo(bdModulos.eschedaTecnica2)
+    print (md2)
 
     mbcMd3 = modelloB2(md2, ambient)
     print(mbcMd3)
 
     print
+
+
+    md3 = Modulo(bdModulos.eschedaTecnica3)
+    print (md3)
+
+
 
     mbcMd3 = modelloB2(md3, ambient)
     print(mbcMd3)
@@ -418,4 +429,4 @@ def testOneDiodeModel():
     print(md4)        
 
 if __name__ == '__main__':
-    test02()
+    testB2()
