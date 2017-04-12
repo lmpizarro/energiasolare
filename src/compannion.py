@@ -201,6 +201,13 @@ def testCompanionB2():
     mod1.caclCircuit(40, "short")
     mod1.calcMpp()
 
+    md1.setAmbient(ambient)
+    I0 = md1.esp["modelli"][-1]["I0"]
+    print md1.getVoc(), md1.Voc, md1.getVmp(), md1.Vmp, md1.getImp(), md1.Imp,\
+            md1.getI0(I0), I0
+
+
+
     '''
     md1.esp["modelli"][0]["Iirr"] = md1.esp["modelli"][0]["Iirr"] * .95
 

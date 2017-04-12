@@ -30,7 +30,7 @@ class modelloB2(object):
 
         self.Ii = m.Isc + deltai * 0.1
 
-        self.T =  ambient.Ta + 273
+        self.T =  ambient.Ta + 273.16
 
         self.Vt = constants.KK * self.T / constants.qq
 
@@ -259,6 +259,22 @@ class Modulo(object):
         return (self.Isc + self.cTIsc * (T - constants.Tref)) * self.ambient.Sa / constants.Sref
 
 
+   
+    def getEg(self, T):
+        #
+        # ev to joule  1.60218e-19
+        #
+        return  (1.17 - (0.000473 *  T * T / (T + 636))) * 1.60218e-19
+
+    def getI0(self, Iref):
+        T = self.temperatura(4)
+        Egref = self.getEg(constants.Tref + 273.16) / 298.16 
+        Eg = self.getEg(T  + 273.16) /  (T + 273.16)
+
+        I = Iref * ((T + 273.16)/298.16) * math.exp ((Egref  - Eg ) / constants.KK)
+        return I
+
+
 
        
 class Ambient(object):
@@ -266,6 +282,7 @@ class Ambient(object):
         self.Ta = Ta
         self.Sa = Sa
         self.Va = Va
+
 
 
     def __str__(self):
@@ -364,7 +381,7 @@ def testOneDiodeModel():
     md4.setAmbient(ambient)
     T = md4.temperatura(4)
 
-    odm = OneDiodeModel(bdModulos.eschedaTecnica4, 0, T + 273.0)
+    odm = OneDiodeModel(bdModulos.eschedaTecnica4, 0, T + 273.16)
 
     V = 0.0
     Il = 0.0
