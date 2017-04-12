@@ -14,30 +14,19 @@ import bdModulos
 
 """
 
-class modelloB1(object):
-    def __init__(self, m):
-        vprima = m.Voc - m.Vmp
-        self.Rsh = ((m.Isc * vprima / m.Imp) + m.Voc)/(2*m.Isc)
-        self.Rs = (self.Rsh * m.Imp - vprima) / m.Imp
-        self.Il = m.Voc / self.Rsh
-
-    def __str__(self):    
-        str1 = ("Rsh: %.3f Rs: %.3f IL: %.3f\n")% (self.Rsh, self.Rs, self.Il)
-        return str1
-
 class modelloB2(object):
     def __init__(self, m, ambient):
 
         deltav = m.Voc - m.Vmp
         deltai = m.Isc - m.Imp
 
-        self.Rs = deltav / m.Imp
+        #self.Rs = deltav / m.Imp
 
-        self.Rsh = m.Voc / deltai
+        #self.Rsh = m.Voc / deltai
 
-        self.Rs2 = deltav / m.Isc
+        self.Rs = deltav / m.Isc
 
-        self.Rsh2 = m.Vmp / deltai
+        self.Rsh = m.Vmp / deltai
 
         self.Ii = m.Isc + deltai * 0.1
 
@@ -75,7 +64,6 @@ class modelloB2(object):
                 "source": "B2", "Iirr": self.Ii, "I0": self.I0})
          
 
-        print m.esp
 
     def __str__(self):    
         str1 = ("Rsh: %.3f Rs: %.3f nref: %.3f Ii: %.3f %.3e\n")%\
@@ -162,8 +150,6 @@ class Modulo(object):
         self.VT = (2*self.Vmp - self.Voc)* (self.Isc - self.Imp)/\
                   (self.Imp + (self.Isc - self.Imp)*math.log(1 - self.Imp/self.Isc))
 
-
-
     def __str__(self):
         str1 =("%s %s \n")%(self.esp["marca"], self.esp["modello"])
         str2 = ("Pn: %.3f Vmp: %.3f Imp: %.3f Voc: %.3f Isc: %.3f Cell: %d \n")%(self.Pn , self.Vmp , self.Imp ,\
@@ -177,8 +163,6 @@ class Modulo(object):
                 self.eff, self.cellArea, self.PnArea, self.pesoEsp)
 
         str6 = ("VT: %.3f\n") %(self.VT)
-
-
 
         return str1 + " " + str2  +  " " + str3 + " " + str4 + str5 + str6 + "\n"
 
@@ -326,26 +310,6 @@ class OneDiodeModel(object):
     def setIph (self, Iph):
         self.Iph = Iph
 
-def test01():        
-    md1 = Modulo(bdModulos.eschedaTecnica1)
-    md2 = Modulo(bdModulos.eschedaTecnica2)
-    md3 = Modulo(bdModulos.eschedaTecnica3)
-    print (md1)
-    print (md2)
-    print (md3)
-
-    mbcMd3 = modelloB1(md3)
-
-    print(mbcMd3)
-
-    cel1 = cella (md1)
-    print (cel1)
-    mbc = modelloB1(cel1)
-
-    print (mbc)
-
-    ca = cavio(100, 32.5, "Cu")
-    print ( ca.R(70))
 
 def testB2():
 
