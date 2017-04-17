@@ -154,6 +154,28 @@ def testCompanion():
 
     '''
 
+def testCompanionB3():
+
+    indexModel = 4
+    Ta = 20
+    Ws = 4
+    Ss = 1500
+
+    ambient = fvMmodel.Ambient (Ta, Ss, Ws)
+
+    md1 = fvMmodel.Modulo(bdModulos.eschedaTecnica1)
+    mbcMd3 = fvMmodel.modelloB3(md1, ambient)
+    print md1.esp 
+
+    mod1 = Companion(md1.esp, 1000, Ta)
+
+    mod1.caclCircuit(80, "open")
+    mod1.caclCircuit(80, "short")
+    #mod1.calcMpp()
+
+    print 
+
+
 def testCompanionB2():
 
     indexModel = 4
@@ -220,5 +242,5 @@ def testCompanionB2():
 
 
 if __name__ == '__main__':
-    print ("test B2")
-    testCompanionB2()
+    print ("test B3")
+    testCompanionB3()

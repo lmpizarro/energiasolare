@@ -14,6 +14,95 @@ import bdModulos
 
 """
 
+
+class modelloB3(object):
+    def __init__(self, m, ambient):
+        self.model = m
+
+        deltav = m.Voc - m.Vmp
+        deltai = m.Isc - m.Imp
+
+        self.cRs = 2.5
+        self.cRsh = 2.0
+        self.cIi = 1.00
+
+        self.T =  ambient.Ta + 273.16
+
+        self.Rs = self.cRs * deltav / self.model.Imp
+
+        self.Rsh = self.cRsh * self.model.Voc / deltai
+
+        self.Ii = self.cIi * self.model.Isc
+
+        self.nref = 1.0
+
+        self.cI0 = 1.0
+
+        self.Vt = self.model.Ns * self.nref * constants.KK * self.T / constants.qq
+
+        self.I0 = self.setI0()
+
+        m.esp["modelli"] = []
+
+        
+        m.esp["modelli"].append({"Rs":self.Rs, "Rsh": self.Rsh, "nref": self.nref,\
+                "source": "B2", "Iirr": self.Ii, "I0": self.I0})
+ 
+        
+
+    def setI0(self):
+        return self.cI0 * (self.Ii - self.model.Voc / self.Rsh) / (math.exp(self.model.Voc /self.Vt) - 1 )
+
+    def __str__(self):    
+        str1 = ("Rsh: %.3f Rs: %.3f nref: %.3f Ii: %.3f I0: %.3e\n")%\
+                (self.Rsh, self.Rs,self.nref, self.Ii, self.I0)
+        return str1
+
+    def calcDeltaIsc (self):
+        return self.model.Isc  - (self.Ii - self.I0 * (math.exp(self.model.Isc * self.Rs) - 1) - \
+                self.model.Isc * self.Rs / self.Rsh)
+
+    def calcDeltaVoc (self):
+        return self.model.Voc  - self.Rsh * (self.Ii - self.I0 *\
+                (math.exp(self.model.Voc/self.Vt)-1)) 
+
+    def ajustaIsc(self):
+
+        deltaIsc = self.calcDeltaIsc()
+        
+        i = 0
+        if deltaIsc > 0.0001:
+            print "deltaIsc > 0.0001"
+            while deltaIsc > 0.0001:
+                self.cIi = self.cIi + 0.00001
+                self.I0 = self.setI0()
+                self.Ii = self.cIi * self.model.Isc
+                deltaIsc = self.calcDeltaIsc()
+
+        if deltaIsc < -0.0001:
+            print "deltaIsc < -0.0001"
+            while deltaIsc < -0.0001:
+                self.cIi = self.cIi - 0.00001
+                self.I0 = self.setI0()
+                self.Ii = self.cIi * self.model.Isc
+                deltaIsc = self.calcDeltaIsc()
+
+
+
+    def ajustaVoc(self):
+        deltaVoc =  self.calcDeltaVoc()   
+
+        if deltaVoc < 0:
+            while deltaVoc < 0:
+                print deltaVoc
+                self.nref = self.nref - 0.0001
+                self.Vt = self.model.Ns * self.nref * constants.KK * self.T / constants.qq
+                self.I0 = self.setI0()
+                self.ajustaIsc()
+                deltaVoc =  self.calcDeltaVoc()   
+
+
+
 class modelloB2(object):
     def __init__(self, m, ambient):
 
@@ -66,7 +155,7 @@ class modelloB2(object):
 
 
     def __str__(self):    
-        str1 = ("Rsh: %.3f Rs: %.3f nref: %.3f Ii: %.3f %.3e\n")%\
+        str1 = ("Rsh: %.3f Rs: %.3f nref: %.3f Ii: %.3f I0: %.3e\n")%\
                 (self.Rsh, self.Rs,self.nref, self.Ii, self.I0)
         return str1
 
@@ -328,6 +417,26 @@ class OneDiodeModel(object):
         self.Iph = Iph
 
 
+def testB3():
+    Ta = 30
+    Ws = 4
+    Ss = 1500
+
+    ambient = Ambient (Ta, Ss, Ws)
+
+    md1 = Modulo(bdModulos.eschedaTecnica4)
+
+    print (md1)
+    mbcMd3 = modelloB3(md1, ambient)
+    print(mbcMd3)
+
+    mbcMd3.ajustaIsc()
+    mbcMd3.ajustaVoc()
+    mbcMd3.ajustaIsc()
+
+    print(mbcMd3)
+
+
 def testB2():
 
     Ta = 30
@@ -359,6 +468,7 @@ def testB2():
 
     mbcMd3 = modelloB2(md3, ambient)
     print(mbcMd3)
+
 
     '''
     cel1 = cella (md1)
@@ -410,4 +520,4 @@ def testOneDiodeModel():
     print(md4)        
 
 if __name__ == '__main__':
-    testB2()
+    testB3()
