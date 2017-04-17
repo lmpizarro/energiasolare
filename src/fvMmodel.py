@@ -22,13 +22,13 @@ class modelloB3(object):
         deltav = m.Voc - m.Vmp
         deltai = m.Isc - m.Imp
 
-        self.cRs = 2.5
+        self.cRs = 1
         self.cRsh = 2.0
         self.cIi = 1.00
 
         self.T =  ambient.Ta + 273.16
 
-        self.Rs = self.cRs * deltav / self.model.Imp
+        self.Rs = (deltav / self.model.Imp) / self.cRs  
 
         self.Rsh = self.cRsh * self.model.Voc / deltai
 
@@ -59,12 +59,32 @@ class modelloB3(object):
         return str1
 
     def calcDeltaIsc (self):
-        return self.model.Isc  - (self.Ii - self.I0 * (math.exp(self.model.Isc * self.Rs) - 1) - \
+        return self.model.Isc  - (self.Ii - self.I0 * (math.exp(self.model.Isc * self.Rs / self.Vt) - 1) - \
                 self.model.Isc * self.Rs / self.Rsh)
 
     def calcDeltaVoc (self):
         return self.model.Voc  - self.Rsh * (self.Ii - self.I0 *\
-                (math.exp(self.model.Voc/self.Vt)-1)) 
+                (math.exp(self.model.Voc/self.Vt)-1))
+
+    def calcCurrrent(self, I, V):
+        Ii = self.Ii
+        I0 = self.I0
+        Rs = self.Rs
+        Rsh = self.Rsh
+
+        Vt = self.Vt
+
+
+        return Ii - I0 * (math.exp((V + I * Rs) / Vt) - 1) - (V + I * Rs) / Rsh
+
+
+    def calcDeltaImp (self):
+        Imp = self.model.Imp
+        Vmp = self.model.Vmp
+
+
+        return self.model.Imp  - self.calcCurrrent(Imp, Vmp) 
+
 
     def ajustaIsc(self):
 
@@ -93,15 +113,15 @@ class modelloB3(object):
         deltaVoc =  self.calcDeltaVoc()   
 
         if deltaVoc < 0:
+            print deltaVoc
             while deltaVoc < 0:
-                print deltaVoc
                 self.nref = self.nref - 0.0001
                 self.Vt = self.model.Ns * self.nref * constants.KK * self.T / constants.qq
                 self.I0 = self.setI0()
                 self.ajustaIsc()
                 deltaVoc =  self.calcDeltaVoc()   
 
-
+        print "deltaImp", self.calcDeltaImp()
 
 class modelloB2(object):
     def __init__(self, m, ambient):
