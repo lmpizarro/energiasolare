@@ -1,7 +1,8 @@
 import math
-import fvMmodel as fvm
 import bdModulos
 import constants
+import fvMmodel as fvm
+import companionSim as comp
 
 class modelloB3(object):
     def __init__(self, m, ambient):
@@ -135,6 +136,25 @@ def testB3():
 
     print(mbcMd3)
 
+def testCompanionB3():
+
+    indexModel = 4
+    Ta = 20
+    Ws = 4
+    Ss = 1500
+
+    ambient = fvm.Ambient (Ta, Ss, Ws)
+
+    md1 = fvm.Modulo(bdModulos.eschedaTecnica1)
+    mbcMd3 = modelloB3(md1, ambient)
+    print md1.esp 
+
+    mod1 = comp.Companion(md1.esp, 1000, Ta)
+
+    mod1.caclCircuit(80, "open")
+    mod1.caclCircuit(80, "short")
+    mod1.calcMpp()
 
 if __name__ == '__main__':
-    testB3()
+    print ("testCompanionB3")
+    testCompanionB3()
