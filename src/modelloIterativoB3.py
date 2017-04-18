@@ -5,27 +5,24 @@ import fvMmodel as fvm
 import companionSim as comp
 
 class modelloB3(object):
+
     def __init__(self, m, ambient):
         self.model = m
 
         deltav = m.Voc - m.Vmp
         deltai = m.Isc - m.Imp
 
-        self.cRs = 1
-        self.cRsh = 1.0
         self.cIi = 1.00
 
         self.T =  ambient.Ta + 273.16
 
-        self.Rs = (deltav / self.model.Imp) / self.cRs  
+        self.Rs = (deltav / self.model.Imp)  
 
-        self.Rsh = self.cRsh * self.model.Voc / deltai
+        self.Rsh = self.model.Voc / deltai
 
         self.Ii = self.cIi * self.model.Isc
 
         self.nref = 1.0
-
-        self.cI0 = 1.0
 
         self.Vt = self.model.Ns * self.nref * constants.KK * self.T / constants.qq
 
@@ -34,11 +31,8 @@ class modelloB3(object):
         m.esp["modelli"] = []
 
         
-        m.esp["modelli"].append({"Rs":self.Rs, "Rsh": self.Rsh, "nref": self.nref,\
-                "source": "B2", "Iirr": self.Ii, "I0": self.I0})
-
     def setI0(self):
-        return self.cI0 * (self.Ii - self.model.Voc / self.Rsh) / (math.exp(self.model.Voc /self.Vt) - 1 )
+        return (self.Ii - self.model.Voc / self.Rsh) / (math.exp(self.model.Voc /self.Vt) - 1 )
 
     def calcCurrrent(self, I, V):
         Ii = self.Ii
@@ -109,6 +103,15 @@ class modelloB3(object):
 
                 deltaMPP = self.calcDeltaImp()
 
+    def ajusta (self):
+        self.ajustaIsc()
+        self.ajustaVoc()
+        self.ajustaMPP()
+
+        self.ajustaVoc()
+        self.model.esp["modelli"].append({"Rs":self.Rs, "Rsh": self.Rsh, "nref": self.nref,\
+                "source": "B2", "Iirr": self.Ii, "I0": self.I0})
+
     def __str__(self):    
         str1 = ("Rsh: %.3f Rs: %.3f nref: %.3f Ii: %.3f I0: %.3e\n")%\
                 (self.Rsh, self.Rs, self.nref, self.Ii, self.I0)
@@ -129,12 +132,14 @@ def testB3():
     mbcMd3 = modelloB3(md1, ambient)
     print(mbcMd3)
 
-    mbcMd3.ajustaIsc()
-    mbcMd3.ajustaVoc()
-    #mbcMd3.ajustaIsc()
-    mbcMd3.ajustaMPP()
+    mbcMd3.ajusta()
 
     print(mbcMd3)
+
+    mod1 = comp.Companion(md1.esp, 1000, Ta)
+    mod1.caclCircuit(80, "open")
+    mod1.caclCircuit(80, "short")
+    mod1.calcMpp()
 
 def testCompanionB3():
 
@@ -156,5 +161,5 @@ def testCompanionB3():
     mod1.calcMpp()
 
 if __name__ == '__main__':
-    print ("testCompanionB3")
-    testCompanionB3()
+    print ("testB3")
+    testB3()
