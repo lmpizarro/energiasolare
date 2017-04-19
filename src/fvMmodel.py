@@ -28,8 +28,12 @@ class modelloB2(object):
         self.Rs = deltav / m.Isc
 
         self.Rsh = m.Vmp / deltai
-
-        self.Ii = m.Isc + deltai * 0.1
+        '''
+        Parameter estimation of photovoltaic modules using iterative method
+        and the Lambert W function: A comparative study
+        Energy Conversion and Management 119 (2016) 37–48
+        '''
+        self.Ii = m.Isc * (self.Rs + self.Rsh)/self.Rsh 
 
         self.T =  ambient.Ta + 273.16
 
@@ -291,8 +295,6 @@ class Ambient(object):
 
 
 class OneDiodeModel(object):
-    #{'Rsh': 62.5481, 'nref': 0.25, 'Rs': 0.733, 'I0': 9.84e-42, 'source':
-    #        'Laudani', 'Iirr': 8.5794}
     def __init__(self,eschedaTecnica, model, T):
         '''
         Ns: number of cells in serie
@@ -312,7 +314,6 @@ class OneDiodeModel(object):
         self.T = T
         self.A = constants.qq / (self.n * constants.KK * self.T)
 
-
     def __str__(self):
         format_ = "Rs: %.3f Rsh: %.3f n: %.3f I0: %.3e T: %.3f A: %.3f"
         str1 = (format_)%(self.Rs, self.Rsh, self.n, self.I0, self.T, self.A)
@@ -327,7 +328,6 @@ class OneDiodeModel(object):
 
     def setIph (self, Iph):
         self.Iph = Iph
-
 
 
 def testB2():

@@ -6,8 +6,23 @@ import constants
 import bdModulos
 import fvMmodel
 
+class Resultados:
+    def init (self):
+        pass
+
+
+    def __str__(self):
+         str1 = ("error pc Vmpp %.3e, error Impp %.3e\n")% \
+                (self.errvmpp, self.errimpp)
+
+         str2 =  ("error pc Isc: %.3e\n")%(self.diffI)
+         str3 =  ("error pc Voc: %.3e\n")%(self.diffV)
+
+         return str1 + str2 + str3       
+
 
 class Companion(object):
+
     def __init__(self, modulo, index, Temp):
         self.modulo = modulo
         if index == 1000:
@@ -34,6 +49,8 @@ class Companion(object):
         self.Voc = self.modulo["datiElettrici"]["Voc"]
 
         self.Gmpp = self.Imp / self.Vmp 
+
+        self.resultados = Resultados()
 
 
     def getId(self, vd):
@@ -63,6 +80,9 @@ class Companion(object):
                 break
         return (v1, il, err)
 
+    def solveGl(self, vd_init, gl):
+        self.gl = gl
+        return self.solver(vd_init)
 
     def calcMpp(self):
         glimit = 10  * self.Gmpp
@@ -83,46 +103,26 @@ class Companion(object):
            gl = gl + deltaG 
 
 
+        self.resultados.vmpp = vmax
+        self.resultados.impp = imax
 
-        errvmpp = 100 * (vmax - self.Vmp) / self.Vmp
-        errimpp = 100 * (imax - self.Imp) / self.Imp
-        err = err / 100
-
-        print ("error CALC MPP %.3e error pc Vmpp %.3f, error Impp %.3f")% \
-                (err, errvmpp, errimpp)
-
+        self.resultados.errvmpp = 100 * (vmax - self.Vmp) / self.Vmp
+        self.resultados.errimpp = 100 * (imax - self.Imp) / self.Imp
+        self.resultados.err = err / 100
 
 
-    def caclCircuit(self, vd_init, circuit):
+    def caclCircuit(self, vd_init):
 
-        if circuit == "mpp":
-            self.gl = self.Gs * self.Gmpp / (self.Gs + self.Gmpp)
-        elif circuit == "short":
-            self.gl = self.Gs
-        elif circuit == "open":
-            self.gl = 0.0
+        self.calcMpp()
 
-
+        self.gl = self.Gs
         (v1, il, err) = self.solver(vd_init)
+        self.resultados.diffI = 100 * (self.Isc - il)/ self.Isc
 
-        #print ("MPP  v1: %.3e il: %.3e err:%.3e")%(v1, il, err)
+        self.gl = 0.0
+        (v1, il, err) = self.solver(vd_init)
+        self.resultados.diffV = 100 * (self.Voc - v1) / self.Voc
 
-
-        if circuit == "mpp":
-            diffV = 100 * (self.Vmp - v1) / self.Vmp
-            diffI = 100 * (self.Imp - il)/ self.Imp
-            print ("error calc MPP: %.3e error pc Vmp: %.3f error pc Imp: %.3f")%(err, diffV, diffI)
-        if circuit == "short":
-            diffI = 100 * (self.Isc - il)/ self.Isc
-            print ("error calc SHORT: %.3e  error pc Isc: %.3f")%(err, diffI)
-        if circuit == "open":
-            diffV = 100 * (self.Voc - v1) / self.Voc
-            print ("error calc OPEN: %.3e  error pc Voc: %.3f")%(err, diffV)
-
-
-    def solveGl(self, vd_init, gl):
-        self.gl = gl
-        return self.solver(vd_init)
 
     def __str__(self):
         str1 = (" MODEL     Gp: %.3e Gs: %.3e I0: %.3e nref: %.3e Iirr %.3e T: %.3f Ns: %d ")%\
@@ -131,28 +131,6 @@ class Companion(object):
         str2 = ("\n MODULLO   Voc: %.3f Isc: %.3f Imp: %.3f Vmp: %.3f Gmpp: %.3f Vt: %.3f")%\
                 (self.Voc, self.Isc, self.Imp, self.Vmp, self.Gmpp, self.Vt)        
         return str1 + str2
-
-def testCompanion():
-
-    indexModel = 4
-    T = 20
-    
-    for i in range(5):
-        indexModel = i
-        mod1 = Companion(bdModulos.eschedaTecnica4, indexModel, T)
-        mod1.caclCircuit(40, "mpp")
-        mod1.caclCircuit(40, "open")
-        mod1.caclCircuit(40, "short")
-    '''
-
-    mod1 = Companion(bdModulos.eschedaTecnica4, indexModel, T)
-    gl = 0
-    for i in range (90):
-       (v1, i1, err) =  mod1.solveGl(40, gl)
-       print  gl, v1, i1
-       gl = gl + 0.01
-
-    '''
 
 
 def testCompanionB2():
@@ -168,9 +146,9 @@ def testCompanionB2():
     mbcMd3 = fvMmodel.modelloB2(md1, ambient)
     mod1 = Companion(md1.esp, 1000, Ta)
 
-    mod1.caclCircuit(40, "open")
-    mod1.caclCircuit(40, "short")
-    mod1.calcMpp()
+    mod1.caclCircuit(40)
+
+    print mod1.resultados
 
     print 
 
@@ -178,46 +156,32 @@ def testCompanionB2():
     mbcMd3 = fvMmodel.modelloB2(md1, ambient)
     mod1 = Companion(md1.esp, 1000, Ta)
 
-    mod1.caclCircuit(40, "open")
-    mod1.caclCircuit(40, "short")
-    mod1.calcMpp()
+    mod1.caclCircuit(40)
 
+    print mod1.resultados
     print 
 
     md1 = fvMmodel.Modulo(bdModulos.eschedaTecnica3)
     mbcMd3 = fvMmodel.modelloB2(md1, ambient)
     mod1 = Companion(md1.esp, 1000, Ta)
 
-    mod1.caclCircuit(40, "open")
-    mod1.caclCircuit(40, "short")
-    mod1.calcMpp()
+    mod1.caclCircuit(40)
 
+    print mod1.resultados
     print 
 
     md1 = fvMmodel.Modulo(bdModulos.eschedaTecnica4)
     mbcMd3 = fvMmodel.modelloB2(md1, ambient)
     mod1 = Companion(md1.esp, 1000, Ta)
 
-    mod1.caclCircuit(40, "open")
-    mod1.caclCircuit(40, "short")
-    mod1.calcMpp()
+    mod1.caclCircuit(40)
+    print mod1.resultados
 
     md1.setAmbient(ambient)
     I0 = md1.esp["modelli"][-1]["I0"]
     print md1.getVoc(), md1.Voc, md1.getVmp(), md1.Vmp, md1.getImp(), md1.Imp,\
             md1.getI0(I0), I0
 
-
-
-    '''
-    md1.esp["modelli"][0]["Iirr"] = md1.esp["modelli"][0]["Iirr"] * .95
-
-    mod1 = Companion(md1.esp, 0, Ta)
-
-    mod1.caclCircuit(40, "mpp")
-    mod1.caclCircuit(40, "open")
-    mod1.caclCircuit(40, "short")
-    '''
 
 
 if __name__ == '__main__':
