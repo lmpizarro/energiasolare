@@ -7,18 +7,49 @@ import bdModulos
 import fvMmodel
 
 class Resultados:
-    def init (self):
-        pass
+    def __init__(self,m):
+        self.Isc = m["Isc"]
+        self.Voc = m["Voc"]
+        self.Vmp = m["Vmp"]
+        self.Imp = m["Imp"]
 
+        self.isc = 0.0
+        self.voc = 0.0
+        self.vmp = 0.0
+        self.imp = 0.0
+
+    def calcSQRT(self):
+        self.errvmpp = (self.vmpp - self.Vmp)
+        self.errimpp = (self.impp - self.Imp)
+        self.diffV = (self.Voc - self.voc) 
+        self.diffI = (self.Isc - self.isc)
+
+        self.errI = 100 * math.sqrt(self.errimpp * self.errimpp + self.diffI * self.diffI)/ \
+                (self.Isc + self.Imp)
+        self.errV = 100 * math.sqrt(self.errvmpp * self.errvmpp + self.diffV * self.diffV)/ \
+                (self.Voc + self.Vmp)
+
+    def calcPercent(self):
+        self.errvmpp = self.errvmpp / self.Vmp
+        self.errimpp = self.errimpp / self.Imp
+        self.diffV /= self.Voc
+        self.diffI /= self.Isc
+    
 
     def __str__(self):
-         str1 = ("error pc Vmpp %.3e, error Impp %.3e\n")% \
+        self.calcSQRT()
+
+        str4 = ("error I %.3e pc:\n")%(self.errI)
+        str5 = ("error V %.3e pc:\n")%(self.errV)
+
+        self.calcPercent()
+
+        str1 = ("error Vmpp %.3e pc, error Impp %.3e pc\n")% \
                 (self.errvmpp, self.errimpp)
+        str2 =  ("error Isc: %.3e pc\n")%(self.diffI)
+        str3 =  ("error Voc: %.3e pc\n")%(self.diffV)
 
-         str2 =  ("error pc Isc: %.3e\n")%(self.diffI)
-         str3 =  ("error pc Voc: %.3e\n")%(self.diffV)
-
-         return str1 + str2 + str3       
+        return str1+ str2+ str3+ str4 + str5      
 
 
 class Companion(object):
@@ -50,7 +81,7 @@ class Companion(object):
 
         self.Gmpp = self.Imp / self.Vmp 
 
-        self.resultados = Resultados()
+        self.resultados = Resultados(self.modulo["datiElettrici"])
 
 
     def getId(self, vd):
@@ -106,22 +137,23 @@ class Companion(object):
         self.resultados.vmpp = vmax
         self.resultados.impp = imax
 
-        self.resultados.errvmpp = 100 * (vmax - self.Vmp) / self.Vmp
-        self.resultados.errimpp = 100 * (imax - self.Imp) / self.Imp
-        self.resultados.err = err / 100
-
 
     def caclCircuit(self, vd_init):
-
+        
+        # calc MPP
         self.calcMpp()
 
+        # calc ISC
         self.gl = self.Gs
         (v1, il, err) = self.solver(vd_init)
-        self.resultados.diffI = 100 * (self.Isc - il)/ self.Isc
+        self.resultados.isc = il
 
+
+        # calc VOC
         self.gl = 0.0
         (v1, il, err) = self.solver(vd_init)
-        self.resultados.diffV = 100 * (self.Voc - v1) / self.Voc
+        self.resultados.voc = v1
+
 
 
     def __str__(self):
