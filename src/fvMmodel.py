@@ -27,7 +27,8 @@ class modelloB2(object):
 
         self.Rs = deltav / m.Isc
 
-        self.Rsh = m.Vmp / deltai
+        self.Rsh = (m.Vmp + m.Imp*self.Rs) / deltai
+
         '''
         Parameter estimation of photovoltaic modules using iterative method
         and the Lambert W function: A comparative study
@@ -40,7 +41,6 @@ class modelloB2(object):
         self.Vt = constants.KK * self.T / constants.qq
 
         N = constants.Vthre / self.Vt
-
 
         self.Vt = m.Ns * self.Vt
 

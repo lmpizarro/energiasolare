@@ -209,11 +209,12 @@ def testCompanionB2():
     mod1.caclCircuit(40)
     print mod1.resultados
 
+    '''
     md1.setAmbient(ambient)
     I0 = md1.esp["modelli"][-1]["I0"]
     print md1.getVoc(), md1.Voc, md1.getVmp(), md1.Vmp, md1.getImp(), md1.Imp,\
             md1.getI0(I0), I0
-
+    '''
 
 
 if __name__ == '__main__':
