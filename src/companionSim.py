@@ -49,7 +49,9 @@ class Resultados:
         str2 =  ("error Isc: %.3e pc\n")%(self.diffI)
         str3 =  ("error Voc: %.3e pc\n")%(self.diffV)
 
-        return str1+ str2+ str3+ str4 + str5      
+        str6 = ("Voc: %.3f  Isc: %.3f  Imp: %.3f  Vmp: %.3f")%(self.Voc, self.Isc, self.Imp, self.Vmp)
+
+        return str1+ str2+ str3+ str4 + str5 + str6
 
 
 class Companion(object):
@@ -181,7 +183,7 @@ def testCompanionB2():
     mod1.caclCircuit(40)
 
     print mod1.resultados
-
+    print mbcMd3
     print 
 
     md1 = fvMmodel.Modulo(bdModulos.eschedaTecnica2)
@@ -191,6 +193,7 @@ def testCompanionB2():
     mod1.caclCircuit(40)
 
     print mod1.resultados
+    print mbcMd3
     print 
 
     md1 = fvMmodel.Modulo(bdModulos.eschedaTecnica3)
@@ -200,6 +203,7 @@ def testCompanionB2():
     mod1.caclCircuit(40)
 
     print mod1.resultados
+    print mbcMd3
     print 
 
     md1 = fvMmodel.Modulo(bdModulos.eschedaTecnica4)
@@ -208,13 +212,7 @@ def testCompanionB2():
 
     mod1.caclCircuit(40)
     print mod1.resultados
-
-    '''
-    md1.setAmbient(ambient)
-    I0 = md1.esp["modelli"][-1]["I0"]
-    print md1.getVoc(), md1.Voc, md1.getVmp(), md1.Vmp, md1.getImp(), md1.Imp,\
-            md1.getI0(I0), I0
-    '''
+    print mbcMd3
 
 
 if __name__ == '__main__':
