@@ -92,31 +92,29 @@ class modelloB2(MB.ModelloBase):
 
         self.Vt = m.Ns * self.Vt
 
-
         #self.nref = (m.Voc - self.Vt * N ) / (self.Vt * N)
 
         self.nref = m.Voc / (self.Vt * N)
 
+        self.calcI0()
+        self.calcRs()
 
+        self.setModello()
+
+
+    def calcI0(self):        
         '''
         Parameter estimation of solar photovoltaic (PV) cells: A review
         Renewable and Sustainable Energy Reviews 61 (2016) 354–371
         A. Rezaee Jordehi 
         '''
         def I0():
-            den = math.exp ((self.Rs * m.Isc) / self.Vt) + math.exp(m.Voc /\
+            den = math.exp ((self.Rs * self.m.Isc) / self.Vt) + math.exp(self.m.Voc /\
                     self.Vt)
-            I0 = m.Isc / den
+            I0 = self.m.Isc / den
             return  I0 
 
         self.I0 = I0() 
-        self.calcRs()
-
-        m.esp["modelli"] = []
-
-        
-        m.esp["modelli"].append({"Rs":self.Rs, "Rsh": self.Rsh, "nref": self.nref,\
-                "source": "B2", "Iirr": self.Ii, "I0": self.I0})
 
     def calcRs(self):
 
@@ -145,8 +143,6 @@ class modelloB2(MB.ModelloBase):
             self.Ii = Ii
         else:
             self.Ii = Ii * 1.001
-
-         
 
 class cavio(object):
    def __init__(self, l, s, m):
