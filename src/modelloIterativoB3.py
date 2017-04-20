@@ -3,28 +3,26 @@ import bdModulos
 import constants
 import fvMmodel as fvm
 import companionSim as comp
+import ModelloBase as MB
 
-class modelloB3(object):
+class modelloB3(MB.ModelloBase):
 
     def __init__(self, m, ambient):
-        self.model = m
 
-        deltav = m.Voc - m.Vmp
-        deltai = m.Isc - m.Imp
+
+
+        super(modelloB3, self).__init__(m, ambient)
 
         self.cIi = 1.00
+        self.Rs = (self.deltav / self.m.Imp)  
 
-        self.T =  ambient.Ta + 273.16
+        self.Rsh = self.m.Voc / self.deltai
 
-        self.Rs = (deltav / self.model.Imp)  
-
-        self.Rsh = self.model.Voc / deltai
-
-        self.Ii = self.cIi * self.model.Isc
+        self.Ii = self.cIi * self.m.Isc
 
         self.nref = 1.0
 
-        self.Vt = self.model.Ns * self.nref * constants.KK * self.T / constants.qq
+        self.Vt = self.m.Ns * self.nref * constants.KK * self.T / constants.qq
 
         self.I0 = self.calcI0()
 
@@ -32,7 +30,7 @@ class modelloB3(object):
 
         
     def calcI0(self):
-        return (self.Ii - (self.model.Voc / self.Rsh)) / (math.exp(self.model.Voc /self.Vt) - 1 )
+        return (self.Ii - (self.m.Voc / self.Rsh)) / (math.exp(self.m.Voc /self.Vt) - 1 )
 
     def calcCurrrent(self, I, V):
         Ii = self.Ii
@@ -45,18 +43,18 @@ class modelloB3(object):
         return Ii - I0 * (math.exp((V + I * Rs) / Vt) - 1) - (V + I * Rs) / Rsh
 
     def calcDeltaIsc (self):
-        return self.model.Isc  - (self.Ii - self.I0 * (math.exp(self.model.Isc * self.Rs / self.Vt) - 1) - \
-                self.model.Isc * self.Rs / self.Rsh)
+        return self.m.Isc  - (self.Ii - self.I0 * (math.exp(self.m.Isc * self.Rs / self.Vt) - 1) - \
+                self.m.Isc * self.Rs / self.Rsh)
 
     def calcDeltaVoc (self):
-        return self.model.Voc  - self.Rsh * (self.Ii - self.I0 *\
-                (math.exp(self.model.Voc/self.Vt)-1))
+        return self.m.Voc  - self.Rsh * (self.Ii - self.I0 *\
+                (math.exp(self.m.Voc/self.Vt)-1))
 
     def calcDeltaImp (self):
-        Imp = self.model.Imp
-        Vmp = self.model.Vmp
+        Imp = self.m.Imp
+        Vmp = self.m.Vmp
 
-        return self.model.Imp  - self.calcCurrrent(Imp, Vmp) 
+        return self.m.Imp  - self.calcCurrrent(Imp, Vmp) 
 
     def ajustaIsc(self):
 
@@ -67,7 +65,7 @@ class modelloB3(object):
             print "deltaIsc > 0.0001"
             while deltaIsc > 0.0001:
                 self.cIi = self.cIi + 0.00001
-                self.Ii = self.cIi * self.model.Isc
+                self.Ii = self.cIi * self.m.Isc
                 self.I0 = self.calcI0()
                 deltaIsc = self.calcDeltaIsc()
 
@@ -75,7 +73,7 @@ class modelloB3(object):
             print "deltaIsc < -0.0001"
             while deltaIsc < -0.0001:
                 self.cIi = self.cIi - 0.00001
-                self.Ii = self.cIi * self.model.Isc
+                self.Ii = self.cIi * self.m.Isc
                 self.I0 = self.calcI0()
                 deltaIsc = self.calcDeltaIsc()
 
@@ -88,7 +86,7 @@ class modelloB3(object):
             print "deltaVoc < -0.0001: ", deltaVoc
             while deltaVoc < -0.0001:
                 self.nref = self.nref - 0.0001
-                self.Vt = self.model.Ns * self.nref * constants.KK * self.T / constants.qq
+                self.Vt = self.m.Ns * self.nref * constants.KK * self.T / constants.qq
                 self.I0 = self.calcI0()
                 #self.ajustaIsc()
                 deltaVoc =  self.calcDeltaVoc()   
@@ -97,7 +95,7 @@ class modelloB3(object):
             print "deltaVoc > 0.0001: ", deltaVoc
             while deltaVoc > 0.0001:
                 self.nref = self.nref + 0.0001
-                self.Vt = self.model.Ns * self.nref * constants.KK * self.T / constants.qq
+                self.Vt = self.m.Ns * self.nref * constants.KK * self.T / constants.qq
                 self.I0 = self.calcI0()
                 #self.ajustaIsc()
                 deltaVoc =  self.calcDeltaVoc()   
@@ -126,7 +124,7 @@ class modelloB3(object):
         self.ajustaMPP()
 
         #self.ajustaVoc()
-        self.model.esp["modelli"].append({"Rs":self.Rs, "Rsh": self.Rsh, "nref": self.nref,\
+        self.m.esp["modelli"].append({"Rs":self.Rs, "Rsh": self.Rsh, "nref": self.nref,\
                 "source": "B2", "Iirr": self.Ii, "I0": self.I0})
 
     def __str__(self):    
