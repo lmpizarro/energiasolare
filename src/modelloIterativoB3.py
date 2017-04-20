@@ -9,8 +9,6 @@ class modelloB3(MB.ModelloBase):
 
     def __init__(self, m, ambient):
 
-
-
         super(modelloB3, self).__init__(m, ambient)
 
         self.cIi = 1.00
@@ -99,10 +97,6 @@ class modelloB3(MB.ModelloBase):
                 self.I0 = self.calcI0()
                 #self.ajustaIsc()
                 deltaVoc =  self.calcDeltaVoc()   
-
-
-
-
 
     def ajustaMPP(self):
         deltaMPP = self.calcDeltaImp()

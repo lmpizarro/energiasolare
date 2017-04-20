@@ -97,6 +97,7 @@ class modelloB2(MB.ModelloBase):
         self.nref = m.Voc / (self.Vt * N)
 
         self.calcI0()
+
         self.calcRs()
 
         self.setModello()
@@ -114,35 +115,29 @@ class modelloB2(MB.ModelloBase):
             I0 = self.m.Isc / den
             return  I0 
 
-        self.I0 = I0() 
+        self.I0 = I0()
+
+    def calcDiff(self,rs):
+        vd = self.m.Vmp + self.m.Imp * rs
+        a = self.I0 * (math.exp(vd/self.Vt) - 1)
+        i = self.Ii  - a  - vd / self.Rsh
+        return self.m.Imp - i
+
+  
 
     def calcRs(self):
 
-        def calcDiff(rs):
-            vd = self.m.Vmp + self.m.Imp * rs
-            a = self.I0 * (math.exp(vd/self.Vt) - 1)
-            i = self.Ii  - a  - vd / self.Rsh
-            return self.m.Imp - i
-
         rs = 0.0
 
-        diff = calcDiff(rs) 
+        diff = self.calcDiff(rs) 
 
         if diff > 0:
             rs = 0.0
         else:
             while diff < 0.0 and rs < self.RsM: 
                rs += 0.001 
-               diff = calcDiff(rs) 
+               diff = self.calcDiff(rs) 
         self.Rs =  rs
-
-    def calcIi(self):
-        Ii =  self.m.Isc * (self.Rs + self.Rsh)/self.Rsh
-
-        if Ii > self.m.Isc:
-            self.Ii = Ii
-        else:
-            self.Ii = Ii * 1.001
 
 class cavio(object):
    def __init__(self, l, s, m):
@@ -405,7 +400,6 @@ class OneDiodeModel(object):
 
 
 def testB2():
-
     Ta = 30
     Ws = 4
     Ss = 1500
