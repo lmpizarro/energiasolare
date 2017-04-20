@@ -4,6 +4,7 @@ import math
 import constants
 import bdModulos
 import ModelloBase as MB
+import companionSim as comp
 
 
 """
@@ -14,8 +15,6 @@ import ModelloBase as MB
  NOCT: Nominal Operating Cell Temperature
 
 """
-
-        
 
 class modelloB4(MB.ModelloBase):
     def __init__(self, m, ambient):
@@ -65,6 +64,8 @@ class modelloB2(MB.ModelloBase):
 
         # massimo
         self.Rs = self.deltav / m.Imp
+
+        self.RsM =  self.Rs
        
         # minimo
         #self.Rsh = (m.Vmp) / self.deltai
@@ -75,14 +76,14 @@ class modelloB2(MB.ModelloBase):
 
         '''
 
-        self.Rsh = (m.Vmp) / self.deltai - self.deltav / m.Imp
+        self.Rsh = (self.m.Vmp) / self.deltai - self.deltav / m.Imp
         '''
         (2) Comprehensive Approach to Modeling and
         Simulation of Photovoltaic Arrays
         IEEE TRANSACTIONS ON POWER ELECTRONICS, VOL. 24, NO. 5, MAY 2009
 
         '''
-        self.Ii = m.Isc * (self.Rs + self.Rsh)/self.Rsh 
+        self.calcIi ()
 
 
         self.Vt = constants.KK * self.T / constants.qq
@@ -132,11 +133,18 @@ class modelloB2(MB.ModelloBase):
         if diff > 0:
             rs = 0.0
         else:
-            while diff < 0.0 and rs < 2.0: 
+            while diff < 0.0 and rs < self.RsM: 
                rs += 0.001 
                diff = calcDiff(rs) 
         self.Rs =  rs
 
+    def calcIi(self):
+        Ii =  self.m.Isc * (self.Rs + self.Rsh)/self.Rsh
+
+        if Ii > self.m.Isc:
+            self.Ii = Ii
+        else:
+            self.Ii = Ii * 1.001
 
          
 
@@ -440,6 +448,11 @@ def testB2():
     mbcMd3 = modelloB2(md1, ambient)
     print("modelloB2 ")
     print mbcMd3
+
+    mod1 = comp.Companion(md1.esp, 1000, Ta)
+    mod1.caclCircuit(80)
+    print mod1.resultados
+
 
 
     mbcMd3 = modelloB4(md3, ambient)

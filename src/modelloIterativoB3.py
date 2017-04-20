@@ -153,9 +153,7 @@ def testB3():
     print(mbcMd3)
 
     mod1 = comp.Companion(md1.esp, 1000, Ta)
-    mod1.caclCircuit(80, "open")
-    mod1.caclCircuit(80, "short")
-    mod1.calcMpp()
+    mod1.caclCircuit(80)
 
 def testCompanionB3():
 
