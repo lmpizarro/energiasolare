@@ -3,6 +3,7 @@
 import math
 import constants
 import bdModulos
+import ModelloBase as MB
 
 
 """
@@ -14,33 +15,9 @@ import bdModulos
 
 """
 
-class Modello(object):
+        
 
-    def __init__(self, m, ambient):
-        self.m = m
-        self.T =  ambient.Ta + 273.16
-
-        self.deltav = m.Voc - m.Vmp
-        self.deltai = m.Isc - m.Imp
-
-
-    def __str__(self):    
-        str1 = ("Rsh: %.3f Rs: %.3f nref: %.3f Ii: %.3f I0: %.3e\n")%\
-                (self.Rsh, self.Rs,self.nref, self.Ii, self.I0)
-        return str1
-
-    def setModello(self):
-
-        if "modelli" not in self.m.esp.keys():
-            self.m.esp["modelli"] = []
-
-        self.m.esp["modelli"].append({"Rs":self.Rs, "Rsh": self.Rsh, "nref": self.nref,\
-                "source": "B2", "Iirr": self.Ii, "I0": self.I0})
-         
-
-
-
-class modelloB4(Modello):
+class modelloB4(MB.ModelloBase):
     def __init__(self, m, ambient):
 
         super(modelloB4, self).__init__(m, ambient)
@@ -49,6 +26,7 @@ class modelloB4(Modello):
         num1 = (2 * m.Vmp - m.Voc ) 
 
         self.Rs = m.Vmp / m.Imp - num1 / (den1)
+
         if self.Rs < 0:
              # massimo
              self.Rs = self.deltav / m.Imp
@@ -80,7 +58,7 @@ class modelloB4(Modello):
 
 
 
-class modelloB2(Modello):
+class modelloB2(MB.ModelloBase):
     def __init__(self, m, ambient):
 
         super(modelloB2, self).__init__(m, ambient)
@@ -89,7 +67,7 @@ class modelloB2(Modello):
         self.Rs = self.deltav / m.Imp
        
         # minimo
-        #self.Rsh = (m.Vmp) / deltai
+        #self.Rsh = (m.Vmp) / self.deltai
         '''
         (2) y (1) Parameter estimation of photovoltaic modules using iterative method
         and the Lambert W function: A comparative study
@@ -131,12 +109,35 @@ class modelloB2(Modello):
             return  I0 
 
         self.I0 = I0() 
+        self.calcRs()
 
         m.esp["modelli"] = []
 
         
         m.esp["modelli"].append({"Rs":self.Rs, "Rsh": self.Rsh, "nref": self.nref,\
                 "source": "B2", "Iirr": self.Ii, "I0": self.I0})
+
+    def calcRs(self):
+
+        def calcDiff(rs):
+            vd = self.m.Vmp + self.m.Imp * rs
+            a = self.I0 * (math.exp(vd/self.Vt) - 1)
+            i = self.Ii  - a  - vd / self.Rsh
+            return self.m.Imp - i
+
+        rs = 0.0
+
+        diff = calcDiff(rs) 
+
+        if diff > 0:
+            rs = 0.0
+        else:
+            while diff < 0.0 and rs < 2.0: 
+               rs += 0.001 
+               diff = calcDiff(rs) 
+        self.Rs =  rs
+
+
          
 
 class cavio(object):
@@ -221,9 +222,9 @@ class Modulo(object):
         IEEE TRANSACTIONS ON INSTRUMENTATION AND MEASUREMENT, VOL. 63, NO. 1,
         JANUARY 2014
 
-        '''
         self.VT = (2*self.Vmp - self.Voc)* (self.Isc - self.Imp)/\
                   (self.Imp + (self.Isc - self.Imp)*math.log(1 - self.Imp/self.Isc))
+        '''
 
     def __str__(self):
         str1 =("%s %s \n")%(self.esp["marca"], self.esp["modello"])
@@ -237,9 +238,8 @@ class Modulo(object):
         str5 = (" eff: %3f cellArea: %.3f  PnArea: %.3f pEsp: %.3f\n")%(\
                 self.eff, self.cellArea, self.PnArea, self.pesoEsp)
 
-        str6 = ("VT: %.3f\n") %(self.VT)
 
-        return str1 + " " + str2  +  " " + str3 + " " + str4 + str5 + str6 + "\n"
+        return str1 + " " + str2  +  " " + str3 + " " + str4 + str5 + "\n"
 
     '''
     refs: 
@@ -430,12 +430,25 @@ def testB2():
 
 
     mbcMd3 = modelloB2(md3, ambient)
-    print(mbcMd3)
+    print("modelloB2 ")
+    print mbcMd3
+
+    mbcMd3 = modelloB2(md2, ambient)
+    print("modelloB2 ")
+    print mbcMd3
+
+    mbcMd3 = modelloB2(md1, ambient)
+    print("modelloB2 ")
+    print mbcMd3
+
 
     mbcMd3 = modelloB4(md3, ambient)
-    print(mbcMd3)
+    print("modelloB4: ")
+    print mbcMd3
 
-
+    mbcMd3 = MB.ModelloBase(md3, ambient)
+    print("modelloBase: ")
+    print mbcMd3
 
     '''
     cel1 = cella (md1)
