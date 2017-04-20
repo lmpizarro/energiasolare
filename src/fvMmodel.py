@@ -14,35 +14,105 @@ import bdModulos
 
 """
 
+class Modello(object):
 
-class modelloB2(object):
+    def __init__(self, m, ambient):
+        self.m = m
+        self.T =  ambient.Ta + 273.16
+
+        self.deltav = m.Voc - m.Vmp
+        self.deltai = m.Isc - m.Imp
+
+
+    def __str__(self):    
+        str1 = ("Rsh: %.3f Rs: %.3f nref: %.3f Ii: %.3f I0: %.3e\n")%\
+                (self.Rsh, self.Rs,self.nref, self.Ii, self.I0)
+        return str1
+
+    def setModello(self):
+
+        if "modelli" not in self.m.esp.keys():
+            self.m.esp["modelli"] = []
+
+        self.m.esp["modelli"].append({"Rs":self.Rs, "Rsh": self.Rsh, "nref": self.nref,\
+                "source": "B2", "Iirr": self.Ii, "I0": self.I0})
+         
+
+
+
+class modelloB4(Modello):
     def __init__(self, m, ambient):
 
-        deltav = m.Voc - m.Vmp
-        deltai = m.Isc - m.Imp
+        super(modelloB4, self).__init__(m, ambient)
 
-        #self.Rs = deltav / m.Imp
+        den1 = m.Imp + self.deltai * math.log(self.deltai/m.Isc)
+        num1 = (2 * m.Vmp - m.Voc ) 
 
-        #self.Rsh = m.Voc / deltai
-
-        self.Rs = deltav / m.Isc
-
-        self.Rsh = (m.Vmp + m.Imp*self.Rs) / deltai
+        self.Rs = m.Vmp / m.Imp - num1 / (den1)
+        if self.Rs < 0:
+             # massimo
+             self.Rs = self.deltav / m.Imp
 
         '''
-        Parameter estimation of photovoltaic modules using iterative method
+        one diode model Rsh -> infinito
+        An Improved Model-Based Maximum Power Point
+        Tracker for Photovoltaic Panels
+        IEEE TRANSACTIONS ON INSTRUMENTATION AND MEASUREMENT, VOL. 63, NO. 1,
+        JANUARY 2014
+        '''
+        self.Vt = num1 * self.deltai / den1 
+
+        self.nref = self.Vt / (m.Ns * constants.KK * self.T / constants.qq)
+
+        self.Rsh = (m.Vmp + m.Imp*self.Rs) / self.deltai
+
+        self.Ii = m.Isc * (self.Rs + self.Rsh)/self.Rsh 
+
+        def I0():
+            den = math.exp ((self.Rs * m.Isc) / self.Vt) + math.exp(m.Voc /\
+                    self.Vt)
+            I0 = m.Isc / den
+            return  I0 
+
+        self.I0 = I0() 
+
+        self.setModello()
+
+
+
+class modelloB2(Modello):
+    def __init__(self, m, ambient):
+
+        super(modelloB2, self).__init__(m, ambient)
+
+        # massimo
+        self.Rs = self.deltav / m.Imp
+       
+        # minimo
+        #self.Rsh = (m.Vmp) / deltai
+        '''
+        (2) y (1) Parameter estimation of photovoltaic modules using iterative method
         and the Lambert W function: A comparative study
         Energy Conversion and Management 119 (2016) 37–48
+
+        '''
+
+        self.Rsh = (m.Vmp) / self.deltai - self.deltav / m.Imp
+        '''
+        (2) Comprehensive Approach to Modeling and
+        Simulation of Photovoltaic Arrays
+        IEEE TRANSACTIONS ON POWER ELECTRONICS, VOL. 24, NO. 5, MAY 2009
+
         '''
         self.Ii = m.Isc * (self.Rs + self.Rsh)/self.Rsh 
 
-        self.T =  ambient.Ta + 273.16
 
         self.Vt = constants.KK * self.T / constants.qq
 
         N = constants.Vthre / self.Vt
 
         self.Vt = m.Ns * self.Vt
+
 
         #self.nref = (m.Voc - self.Vt * N ) / (self.Vt * N)
 
@@ -68,15 +138,6 @@ class modelloB2(object):
         m.esp["modelli"].append({"Rs":self.Rs, "Rsh": self.Rsh, "nref": self.nref,\
                 "source": "B2", "Iirr": self.Ii, "I0": self.I0})
          
-
-
-    def __str__(self):    
-        str1 = ("Rsh: %.3f Rs: %.3f nref: %.3f Ii: %.3f I0: %.3e\n")%\
-                (self.Rsh, self.Rs,self.nref, self.Ii, self.I0)
-        return str1
-
-
-
 
 class cavio(object):
    def __init__(self, l, s, m):
@@ -152,6 +213,15 @@ class Modulo(object):
        
         self.eff = (self.Pn / self.area) / 10
 
+
+        '''
+        one diode model Rsh -> infinito
+        An Improved Model-Based Maximum Power Point
+        Tracker for Photovoltaic Panels
+        IEEE TRANSACTIONS ON INSTRUMENTATION AND MEASUREMENT, VOL. 63, NO. 1,
+        JANUARY 2014
+
+        '''
         self.VT = (2*self.Vmp - self.Voc)* (self.Isc - self.Imp)/\
                   (self.Imp + (self.Isc - self.Imp)*math.log(1 - self.Imp/self.Isc))
 
@@ -361,6 +431,10 @@ def testB2():
 
     mbcMd3 = modelloB2(md3, ambient)
     print(mbcMd3)
+
+    mbcMd3 = modelloB4(md3, ambient)
+    print(mbcMd3)
+
 
 
     '''
