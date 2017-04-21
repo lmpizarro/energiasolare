@@ -4,6 +4,7 @@ import constants
 import moduloFv as fvm
 import companionSim as comp
 import ModelloBase as MB
+import modelloAmbiente as AMB
 
 class modelloB3(MB.ModelloBase):
 
@@ -131,7 +132,7 @@ def testB3():
     Ws = 4
     Ss = 1500
 
-    ambient = fvm.Ambient (Ta, Ss, Ws)
+    ambient = AMB.Ambient (Ta, Ss, Ws)
 
     md1 = fvm.Modulo(bdModulos.eschedaTecnica4)
 

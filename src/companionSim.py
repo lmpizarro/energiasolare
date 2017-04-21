@@ -5,6 +5,8 @@ import math
 import constants
 import bdModulos
 import moduloFv
+import modelloAmbiente as AMB
+import modelloB2 as MB2
 
 class Resultados(object):
     def __init__(self,m):
@@ -175,10 +177,10 @@ def testCompanionB2():
     Ws = 4
     Ss = 1500
 
-    ambient = moduloFv.Ambient (Ta, Ss, Ws)
+    ambient = AMB.Ambient (Ta, Ss, Ws)
 
     md1 = moduloFv.Modulo(bdModulos.eschedaTecnica1)
-    mbcMd3 = moduloFv.modelloB2(md1, ambient)
+    mbcMd3 = MB2.modelloB2(md1, ambient)
     mod1 = Companion(md1.esp, 1000, Ta)
 
     mod1.caclCircuit(40)
@@ -188,7 +190,7 @@ def testCompanionB2():
     print 
 
     md1 = moduloFv.Modulo(bdModulos.eschedaTecnica2)
-    mbcMd3 = moduloFv.modelloB2(md1, ambient)
+    mbcMd3 = MB2.modelloB2(md1, ambient)
     mod1 = Companion(md1.esp, 1000, Ta)
 
     mod1.caclCircuit(40)
@@ -198,7 +200,7 @@ def testCompanionB2():
     print 
 
     md1 = moduloFv.Modulo(bdModulos.eschedaTecnica3)
-    mbcMd3 = moduloFv.modelloB2(md1, ambient)
+    mbcMd3 = MB2.modelloB2(md1, ambient)
     mod1 = Companion(md1.esp, 1000, Ta)
 
     mod1.caclCircuit(40)
@@ -208,7 +210,7 @@ def testCompanionB2():
     print 
 
     md1 = moduloFv.Modulo(bdModulos.eschedaTecnica4)
-    mbcMd3 = moduloFv.modelloB2(md1, ambient)
+    mbcMd3 = MB2.modelloB2(md1, ambient)
     mod1 = Companion(md1.esp, 1000, Ta)
 
     mod1.caclCircuit(40)
