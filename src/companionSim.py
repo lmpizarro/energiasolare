@@ -178,6 +178,7 @@ def testCompanionB2():
     Ss = 1500
 
     ambient = AMB.Ambient (Ta, Ss, Ws)
+    ambient.setModelo (4)
 
     md1 = moduloFv.Modulo(bdModulos.eschedaTecnica1)
     mbcMd3 = MB2.modelloB2(md1, ambient)

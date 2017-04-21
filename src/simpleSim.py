@@ -53,10 +53,11 @@ def testOneDiodeModel():
     Ss = 1500
 
     ambient = AMB.Ambient (Ta, Ss, Ws)
+    ambient.setModelo(4)
 
     md4 = mFV.Modulo(bdModulos.eschedaTecnica4)
     md4.setAmbient(ambient)
-    T = ambient.getTemperatura(4)
+    T = ambient.getTemperatura()
 
     odm = OneDiodeModel(md4, 0, T + 273.16)
 

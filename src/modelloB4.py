@@ -53,6 +53,7 @@ def testB4():
     Ss = 1500
 
     ambient = AMB.Ambient (Ta, Ss, Ws)
+    ambient.setModelo(4)
 
     md1 = mFV.Modulo(bdModulos.eschedaTecnica4)
 

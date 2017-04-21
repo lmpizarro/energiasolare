@@ -86,7 +86,7 @@ class Modulo(object):
     Cristaldi, Faifer, Rossi, Toscani
     '''
     def getVoc (self):
-        T = self.ambient.getTemperatura(4)
+        T = self.ambient.getTemperatura()
         VT = self.VT * T / constants.Tref
         return self.Voc + self.cTVoc*(T - constants.Tref) + \
                    VT * math.log(self.ambient.Sa / constants.Sref)
@@ -96,13 +96,13 @@ class Modulo(object):
       Renewable and Sustainable Energy Reviews 61 (2016) 354–371
     '''
     def getVmp(self):
-        T = self.ambient.getTemperatura(4)
+        T = self.ambient.getTemperatura()
         VT = self.VT * T / constants.Tref
         return self.Vmp + self.cTVoc*(T - constants.Tref) + \
                    VT * math.log(self.ambient.Sa / constants.Sref)
 
     def getImp(self):
-        T = self.ambient.getTemperatura(4)
+        T = self.ambient.getTemperatura()
         return (self.Imp + self.cTIsc * (T - constants.Tref)) * self.ambient.Sa / constants.Sref
 
     '''
@@ -111,7 +111,7 @@ class Modulo(object):
     Chen Qi, Zhu Ming
     '''
     def getIph(self):
-        T = self.ambient.getTemperatura(4)
+        T = self.ambient.getTemperatura()
         return (self.Isc + self.cTIsc * (T - constants.Tref)) * self.ambient.Sa / constants.Sref
 
    
@@ -122,7 +122,7 @@ class Modulo(object):
         return  (1.17 - (0.000473 *  T * T / (T + 636))) * 1.60218e-19
 
     def getI0(self, Iref):
-        T = self.ambient.getTemperatura(4)
+        T = self.ambient.getTemperatura()
         Egref = self.getEg(constants.Tref + 273.16) / 298.16 
         Eg = self.getEg(T  + 273.16) /  (T + 273.16)
 
