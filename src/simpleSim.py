@@ -4,6 +4,7 @@ import math
 import moduloFv as mFV
 import bdModulos
 import constants
+import modelloAmbiente as AMB
 
 class OneDiodeModel(object):
     def __init__(self, modulo, index, Temp):
@@ -51,11 +52,11 @@ def testOneDiodeModel():
     Ws = 4
     Ss = 1500
 
-    ambient = mFV.Ambient (Ta, Ss, Ws)
+    ambient = AMB.Ambient (Ta, Ss, Ws)
 
     md4 = mFV.Modulo(bdModulos.eschedaTecnica4)
     md4.setAmbient(ambient)
-    T = md4.temperatura(4)
+    T = ambient.temperatura(4)
 
     odm = OneDiodeModel(md4, 0, T + 273.16)
 
@@ -67,7 +68,7 @@ def testOneDiodeModel():
         Il = odm.current01(V)
         Il2 = odm.current02(V)
         Wp = V * Il
-        print  ("%.3f %.3f %.3f %.3f %.3f %.3e")%(V, Il, Wp, Il2, Il2 * V)
+        print  ("%.3f %.3f %.3f %.3f %.3f")%(V, Il, Wp, Il2, Il2 * V)
         V = V + 0.01
 
 if __name__ == '__main__':
