@@ -3,7 +3,7 @@ import bdModulos
 import constants
 import moduloFv as fvm
 import companionSim as comp
-import ModelloBase as MB
+import modelloBase as MB
 import modelloAmbiente as AMB
 
 class modelloB3(MB.ModelloBase):

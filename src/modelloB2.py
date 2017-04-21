@@ -1,7 +1,7 @@
 
 # coding: utf-8
 import math
-import ModelloBase as MB
+import modelloBase as MB
 import moduloFv as mFV
 import bdModulos
 import constants
@@ -75,13 +75,16 @@ class modelloB2(MB.ModelloBase):
         i = self.Ii  - a  - vd / self.Rsh
         return self.m.Imp - i
 
-  
-
     def calcRs(self):
 
         rs = 0.0
-
         diff = self.calcDiff(rs) 
+
+        while diff > 0:
+           diff = self.calcDiff(rs) 
+           self.Rsh += 1
+           print "diff"
+
 
         if diff > 0:
             rs = 0.0

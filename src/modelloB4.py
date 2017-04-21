@@ -1,7 +1,7 @@
 
 # coding: utf-8
 import math
-import ModelloBase as MB
+import modelloBase as MB
 import moduloFv as mFV
 import bdModulos
 import constants

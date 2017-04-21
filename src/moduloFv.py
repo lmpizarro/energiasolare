@@ -3,8 +3,6 @@
 import math
 import constants
 import bdModulos
-import ModelloBase as MB
-import companionSim as comp
 
 
 """
