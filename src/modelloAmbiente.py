@@ -34,7 +34,7 @@ class Ambient(object):
             Energy Procedia 40 (2013) 77 – 86
 
     '''
-    def temperatura (self, modelo):
+    def getTemperatura (self, modelo):
         '''
            S: is irradiance intensity ( W m2 );
            Ta: ambient temperature (°C)
@@ -62,7 +62,14 @@ class Ambient(object):
 
         return T 
 
+    def setTa(self, T):
+        self.Ta = T
 
+    def setSa(self, S):
+        self.Sa = T
+
+    def setVa(self, V):
+        self.Va = T
 
     def __str__(self):
         str_ = ("Ta: %.3f Sa: %.3f Va: %.3f")%(self.Ta, self.Sa, self.Va)
