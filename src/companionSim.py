@@ -6,7 +6,7 @@ import constants
 import bdModulos
 import moduloFv
 
-class Resultados:
+class Resultados(object):
     def __init__(self,m):
         self.Isc = m["Isc"]
         self.Voc = m["Voc"]
@@ -58,6 +58,7 @@ class Companion(object):
 
     def __init__(self, modulo, index, Temp):
         self.modulo = modulo
+
         if index == 1000:
             self.modelli = self.modulo["modelli"][-1]
         else:    
