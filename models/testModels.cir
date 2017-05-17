@@ -1,5 +1,5 @@
 * POWER SUPPLIES
-V_V1 80 0 dc 0.0 ac 1.0 sin(0.0 33.00 50.0 0 0)
+V_V1 80 0 dc 0.0 ac 1.0 sin(0.0 33.84 50.0 0 0)
 
 
 .include ../models/1N4007.model
@@ -47,7 +47,7 @@ Cl3 202 0 100u
 *
 .control
 run
- plot  v(202)
+ plot  v(2) v(1) v(202)
 .endc
 
 
