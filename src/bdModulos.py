@@ -36,3 +36,73 @@ eschedaTecnica4 = {"datiElettrici" :{"Pn":235, "Vmp": 29.6, "Imp": 7.94, \
             {"Rs": 0.2371, "nref": 1.34, "Rsh": 4393.8, "I0": 1.2857E-7,
                 "Iirr":8.4805, "source": "Laudani"}
             ]}
+
+BD = [eschedaTecnica1, eschedaTecnica2, eschedaTecnica3, eschedaTecnica4]
+
+class BDPFV(object):
+    def __init__(self, BD):
+        self.BD = BD
+        self.query = []
+
+    def getWPMa(self, wpl):
+        a = []
+        for e in self.BD:
+            if e["datiElettrici"]["Pn"] > wpl:
+               a.append(e) 
+        self.query =  a        
+
+    def getWPMe(self, wpl):
+        a = []
+        for e in self.BD:
+            if e["datiElettrici"]["Pn"] < wpl:
+               a.append(e) 
+        self.query =  a        
+
+    def getWPEq(self, wpl):
+        a = []
+        for e in self.BD:
+            if e["datiElettrici"]["Pn"] == wpl:
+               a.append(e) 
+        self.query =  a
+
+
+    def getAll(self):
+        a = []
+        for e in self.BD:
+               a.append(e) 
+        self.query =  a
+
+
+
+
+    def __str__(self):
+        format1 = "%.3f %.3f %.3f %.3f %.3f \n" 
+
+        str1 = "Wp:     Voc:   Isc:  Vmp:   Imp:\n"
+        for e in self.query:
+            a  = e["datiElettrici"] 
+            str1 +=  (format1)%(a["Pn"], a["Voc"], a["Isc"], a["Vmp"], a["Imp"])
+
+        return str1    
+
+def testBD():
+    bd = BDPFV(BD)
+
+    a = bd.getWPMa(300)
+    print bd
+
+    print 
+    a = bd.getWPMe(280)
+    print bd
+
+    print 
+    a = bd.getWPEq(320)
+    print bd
+
+    print 
+    a = bd.getAll()
+    print bd
+
+
+if __name__ == '__main__':
+    testBD()       
