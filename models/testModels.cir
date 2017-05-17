@@ -1,0 +1,57 @@
+* POWER SUPPLIES
+V_V1 80 0 dc 0.0 ac 1.0 sin(0.0 33.00 50.0 0 0)
+
+
+.include ../models/1N4007.model
+.include ../models/TL431ED.sub
+*.include ../models/TLV431A.LIB
+.include ../models/BC547B.model
+.include ../models/opamp1.model
+.include ../models/doublersplit.model
+.include ../models/prereg57.model
+
+XDB1 80 0 12 11 200 0 DOUBLERSPLIT 
+
+R1 12 1 150
+
+R3 1 3 64000
+R4 3 0 12500
+CC1 1 3 2u
+C1 3 0 10u
+XTL2 1 0 3 TL431ED
+
+C1 1 0 10u
+Rl1 1 0 500
+
+R2 11 2 150
+R5 0 4 64000
+R6 4 2 12500
+XTL3 0 2 4 TL431ED
+
+C2 2 0 10u
+Rl2 2 0 500
+
+XR57 200 0 202 PREREG57
+
+Rl3 202 0 1000
+Cl3 202 0 100u
+
+
+*
+* CHECK DISTORTION WITH FOURIER SERIES ANALYSIS
+*.FOUR 10KHZ V(50,5)
+*
+* ANALYSIS
+.TRAN 	.0001S  2S
+*.AC 	DEC 	5 .1Hz 10000KHz
+*
+.control
+run
+ plot  v(202)
+.endc
+
+
+* VIEW RESULTS
+.PRINT	TRAN 	V(12) 
+.PROBE
+.END
