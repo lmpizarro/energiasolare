@@ -1,16 +1,21 @@
 * POWER SUPPLIES
 V_V1 80 0 dc 0.0 ac 1.0 sin(0.0 33.84 50.0 0 0)
+V_V2 90 0 dc 0.0 ac 1.0 sin(0.0 16.92 50.0 0 0)
 
 
-.include ../models/1N4007.model
-.include ../models/TL431ED.sub
-*.include ../models/TLV431A.LIB
-.include ../models/BC547B.model
-.include ../models/opamp1.model
-.include ../models/doublersplit.model
-.include ../models/prereg57.model
+.include ./1N4007.model
+.include ./TL431ED.sub
+.include ./TLV431A.LIB
+.include ./BC547B.model
+.include ./opamp1.model
+.include ./doublersplit.model
+.include ./prereg57.model
+.include ./tripler.model
 
 XDB1 80 0 12 11 200 0 DOUBLERSPLIT 
+XDB2 90 0 900 TRIPLER
+RLtr1 900 0 4800
+
 
 R1 12 1 150
 
