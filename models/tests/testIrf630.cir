@@ -1,0 +1,37 @@
+* DRIVER
+
+.include ../BC547B.model
+.include ../BC557.model
+.include ../sihf630.lib
+.incude ../1N4148B.model
+.incude ../TIP110.SP3
+.include ../TIP31.SP3
+.include ../bav21.model
+
+VCC 10 0 DC 9
+VIN1 20 0 PULSE(0 5V 1NS 1NS 1NS .07MS .1MS)
+
+*D1 20 1  1N4148B
+RP 1 0 1000
+L1 10 2 400u
+Q1 0 20 1 BC557
+XQ1 2 1 0 irf630
+Q2 10 20 1 BC547B
+D2 2 3 bav21
+
+Cl 3 0 100u
+Rl 3 0 10000
+
+
+* ANALYSIS
+.TRAN 	.01S  1S
+*.AC 	DEC 	5 .1Hz 10000KHz
+*
+
+.control
+ run
+ plot   v(3)
+.endc
+
+
+
