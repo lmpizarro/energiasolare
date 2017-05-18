@@ -1,0 +1,22 @@
+* test phvcell
+.include ./phvcell.model
+
+X1 1 0 PHVCELL PARAMS: Iirr=6 
+*X1 1 0 PHVCELL 
+
+
+R1 1 0  1
+
+* ANALYSIS
+.TRAN 	.0001S  2S
+*.AC 	DEC 	5 .1Hz 10000KHz
+*
+
+.control
+ run
+ plot  v(1)
+.endc
+
+
+
+
