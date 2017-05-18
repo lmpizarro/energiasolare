@@ -1,25 +1,28 @@
-* vcc ref vi+ vi- vo+ vo-
+* vcc ref v1 v2 vo+ vo- 
 .include BD139.SP3
 .include BD140.LIB
+.include TIP110.SP3
+.include TIP115.SP3
 
-.SUBCKT PONTEH 1 2 3 4 5 6 Rbase = 100
+* http://www.talkingelectronics.com/projects/H-Bridge/H-Bridge-1.html
+.SUBCKT PONTEH 1 2 3 4 5 6  Rbase = 220
 
-XQ1 5 7 1 BD140
-Q2 5 8 2 BD139
+XQ1 5 7 1 tip115
+XQ2 5 9 2 tip110
 
 D1 5 1 1N4007
 D2 2 5 1N4007
 
-R1 7 3 {Rbase}
-R2 8 3 {Rbase}
+R1 7 6 {Rbase}
+R2 8 5 {Rbase}
 
-XQ3 6 9 1 BD140
-Q4 6 10 2 BD139
+XQ3 6 8 1 tip115
+Q4 6 10 2 tip110
 
 D3 6 1 1N4007
-D4 1 6 1N4007
+D4 2 6 1N4007
 
-R3 9 4 {Rbase}
+R3 9 3 {Rbase}
 R4 10 4 {Rbase}
 
 .MODEL  1N4007  D(IS=3.872n RS=1.66E-02 N=1.776 XTI=3.0 EG=1.110 

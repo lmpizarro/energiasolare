@@ -1,29 +1,29 @@
-* test phvcell
+* DRIVER
 
+.include ../BC547B.model
 .include ../ponteh.model
 
 VCC 10 0 DC 9
-*VII 20 0 DC 5
-VIN1 20 0 PULSE(0 5 2uS 2uS 2uS 10MS 20MS)
-VIN2 30 0 PULSE(0 5 2uS 2uS 2uS 10MS 20MS)
+VIN1 20 0 PULSE(0 5 2NS 2NS 2NS 10MS 20MS)
 
+R1 10 2 1000
+Q1 2 20 0 BC547B
+*C1 20 2 20p
 
-* vcc ref vi+ vi- vo+ vo- 
-*.SUBCKT PONTEH 1 2 3 4 5 6 
-X1 10 0 20 0 3 4 PONTEH
+* vcc ref v1+ v1- v2+ v2- vo+ vo-
+xp1 10 0 20 2  5 6 ponteh
 
-R1 3 4  1000
+Rl 5 6 1000
 
 * ANALYSIS
-.TRAN 	.0001S  .2S
+.TRAN 	.001S  .02S
 *.AC 	DEC 	5 .1Hz 10000KHz
 *
 
 .control
  run
- plot  v(3) - v(4)
+ plot   v(5) - v(6)
 .endc
-
 
 
 
