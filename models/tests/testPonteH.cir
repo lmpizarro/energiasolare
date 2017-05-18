@@ -1,15 +1,16 @@
 * test phvcell
+
 .include ../ponteh.model
+
 VCC 10 0 DC 9
 *VII 20 0 DC 5
-VIN1 20 0 PULSE(0 1 2NS 2NS 2NS 10MS 20MS)
-VIN2 30 0 PULSE(0 1 2NS 2NS 2NS 10MS 20MS)
+VIN1 20 0 PULSE(0 5 2uS 2uS 2uS 10MS 20MS)
+VIN2 30 0 PULSE(0 5 2uS 2uS 2uS 10MS 20MS)
 
 
 * vcc ref vi+ vi- vo+ vo- 
 *.SUBCKT PONTEH 1 2 3 4 5 6 
-
-X1 10 0 0 30 3 4 PONTEH
+X1 10 0 20 0 3 4 PONTEH
 
 R1 3 4  1000
 
