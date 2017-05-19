@@ -1,5 +1,5 @@
 * test phvcell
-.include ../phvcell.model
+.include ../models/generics/phvcell.model
 
 X1 1 0 PHVCELL PARAMS: Iirr=4 
 

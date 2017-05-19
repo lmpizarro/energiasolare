@@ -3,14 +3,14 @@ V_V1 80 0 dc 0.0 ac 1.0 sin(0.0 33.84 50.0 0 0)
 V_V2 90 0 dc 0.0 ac 1.0 sin(0.0 16.92 50.0 0 0)
 
 
-.include ./1N4007.model
-.include ./TL431ED.sub
-.include ./TLV431A.LIB
-.include ./BC547B.model
-.include ./opamp1.model
-.include ./doublersplit.model
-.include ./prereg57.model
-.include ./tripler.model
+.include ../models/components/1N4007.model
+.include ../models/ci/TL431ED.sub
+.include ../models/ci/TLV431A.LIB
+.include ../models/components/BC547B.model
+.include ../models/generics/opamp1.model
+.include ../models/generics/doublersplit.model
+.include ../models/generics/prereg57.model
+.include ../models/generics/tripler.model
 
 XDB1 80 0 12 11 200 0 DOUBLERSPLIT 
 XDB2 90 0 900 TRIPLER

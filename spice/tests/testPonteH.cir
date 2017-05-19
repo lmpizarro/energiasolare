@@ -1,7 +1,7 @@
 * DRIVER
 
-.include ../BC547B.model
-.include ../ponteh.model
+.include ../models/components/BC547B.model
+.include ../models/generics/ponteh.model
 
 VCC 10 0 DC 9
 VIN1 20 0 PULSE(0 5 2NS 2NS 2NS 10MS 20MS)
