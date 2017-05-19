@@ -1,0 +1,19 @@
+* vi  CE RE WE vo 
+.include opamp1.model
+
+.SUBCKT POTENTIOSTAT 1 0 3 5 6 7
+
+XOP1	0 1 1 OPAMP1
+R1 2 1 .1K
+R2 2 4 .1K
+XOP2	0 2  3 OPAMP1 
+XOP3	5 4 4 OPAMP1
+
+XOP4	0 6  7 OPAMP1
+
+C1 7 6 1000p
+
+R3 6 7 .1K
+
+
+.ENDS
