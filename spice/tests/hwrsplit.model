@@ -1,0 +1,25 @@
+* HWRSPLIT
+
+.include ../models/generics/hwrsplit.model
+
+VIN1 80 0 ac 1.0 sin(0.0 33.84 50.0 0 0)
+
+* vi 0 v+ v- 
+xp1 80 0 5 6  hwrsplit
+
+Rl1 5 0 100
+Rl2 6 0 100
+
+
+* ANALYSIS
+.TRAN 	.001S  2S
+*.AC 	DEC 	5 .1Hz 10000KHz
+*
+
+.control
+ run
+ plot    v(5)  v(6)
+.endc
+
+
+
