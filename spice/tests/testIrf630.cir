@@ -1,15 +1,16 @@
-* DRIVER
+* TESTIRF630
+* info: https://threeneurons.wordpress.com/nixie-power-supply/hv-supply-kit/
 
-.include ../models/BC547B.model
-.include ../models/BC557.model
-.include ../models/sihf630.lib
-.include ../models/sihf540.lib
-.include ../models/irf530.lib
-.include ../models/irf510.lib
-.incude ../models/1N4148B.model
-.incude ../models/TIP110.SP3
-.include ../models/TIP31.SP3
-.include ../models/bav21.model
+.include ../models/components/BC547B.model
+.include ../models/components/BC557.model
+.include ../models/components/sihf630.lib
+.include ../models/components/sihf540.lib
+.include ../models/components/irf530.lib
+.include ../models/components/irf510.lib
+.incude ../models/components/1N4148B.model
+.incude ../models/components/TIP110.SP3
+.include ../models/components/TIP31.SP3
+.include ../models/components/bav21.model
 
 VCC 10 0 DC 9
 VIN1 20 0 PULSE(0 9V 1NS 1NS 1NS .005MS .01MS)
