@@ -1,15 +1,15 @@
 * DRIVER
 
-.include ../BC547B.model
-.include ../BC557.model
-.include ../sihf630.lib
-.include ../sihf540.lib
-.include ../irf530.lib
-.include ../irf510.lib
-.incude ../1N4148B.model
-.incude ../TIP110.SP3
-.include ../TIP31.SP3
-.include ../bav21.model
+.include ../models/BC547B.model
+.include ../models/BC557.model
+.include ../models/sihf630.lib
+.include ../models/sihf540.lib
+.include ../models/irf530.lib
+.include ../models/irf510.lib
+.incude ../models/1N4148B.model
+.incude ../models/TIP110.SP3
+.include ../models/TIP31.SP3
+.include ../models/bav21.model
 
 VCC 10 0 DC 9
 VIN1 20 0 PULSE(0 9V 1NS 1NS 1NS .005MS .01MS)
