@@ -1,0 +1,20 @@
+* VCC VEE IN OUT
+.include ../components/BC547B.model
+.include ../components/BC557.model
+.include ../components/1N4148B.model
+
+.SUBCKT BUFFERAB 1 2 3 4 
+
+
+R1 1 5 3K
+R2 6 2 3K
+R3 7 4 10
+R4 8 4 10
+
+D1 5 3 1N4148
+D2 3 6 1N4148
+
+Q1 1 5 7 BC547B
+Q2 2 6 8 BC557
+
+.ENDS

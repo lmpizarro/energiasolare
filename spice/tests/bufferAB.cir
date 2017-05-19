@@ -1,0 +1,27 @@
+* bufferAB
+
+.include ../models/generics/bufferAB.model
+
+VCC 20 0 DC 15
+VEE 0 10 DC 15
+
+VIN1 80 0 ac 1.0 sin(0.0 23.84 50.0 0 0)
+
+* vi 0 v+ v- 
+xp1 20 10  80 5   bufferAB
+
+Rl1 5 0 5000
+
+
+* ANALYSIS
+.TRAN 	.0001S  .2S
+*.AC 	DEC 	5 .1Hz 10000KHz
+*
+
+.control
+ run
+ plot    v(5)
+.endc
+
+
+
