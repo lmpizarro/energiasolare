@@ -3,16 +3,18 @@
 .include ../components/BC547B.model
 .include ../components/BD139.SP3
 .include ../components/BD140.LIB
+.include ../components/BC327.model
 
 *v+ v- vcc vdd vo
 .SUBCKT DOA1PNP 1 5 12 11 7 
 
 XCS1 12 11 3 CURRSRC1
-Q2 11 5 3 BC557
 
-Q1 2 1 3 BC557
+Q2 11 5 3 BC327
 
-Rc1 2 11 750
+Q1 2 1 3 BC327
+
+Rc1 2 11 1250
 RE2 8 11 10 
 Q3 6 2 8 BC547B
 C1 6 2 200p
@@ -21,9 +23,9 @@ C1 6 2 200p
 
 XCS2 12 11 6 CURRSRC1 RI=75
 
-XCS3 12 11 7 CURRSRC1 RI=15
+XCS3 12 11 7 CURRSRC2 RI=15
 
-Q4 11 6 7 BC557
+Q4 11 6 7 BC327
 
 RCC 11 110 3500
 
@@ -49,7 +51,7 @@ R2 1 9 {RI}
 
 R1 2 8 18K
 
-Q1 3 8 9 BC557
+XQ1 3 8 9 BD140
 D1 1 10 1N4148
 D2 10 8 1N4148
 
