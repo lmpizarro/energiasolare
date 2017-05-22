@@ -1,8 +1,9 @@
 .include ../components/BC327.model 
 .include ../components/1N4148B.model 
+.include compounds.model
 
 * VCC VDD v+ v-
-.SUBCKT DIFFSTAGEPNP 1 2 3 4 5 6 
+.SUBCKT DIFFSTAGESZP 1 2 3 4 5 6 
 
 * I = 4 mA
 RECS 1 9 150
@@ -10,14 +11,17 @@ D1 1 10 1N4148B
 D2 10 8 1N4148B
 RPCS 8 2 18K
 
-XQCS 7 8 9 BC327
+QCS 7 8 9 BC327
 
-XQ1 6 4 7 BC327
-XQ2 5 3 7 BC327
+RE1 7 70 62.5
+XQ1 6 4 70 SZKPNP
+
+RE2 7 71 62.5
+XQ2 5 3 71 SZKPNP
 
 RCE1 2 6 1250
 RCE2 2 5 1250
 
 
 
-.ENDS
+.ENDS DIFFSTAGESZP

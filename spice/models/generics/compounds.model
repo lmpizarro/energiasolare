@@ -1,17 +1,20 @@
 .include ../components/BD140.LIB 
+.include ../components/BC557.model 
+.include ../components/BC547B.model 
+.include ../components/BC327.model 
 
 * C B E
 .SUBCKT SZKNPN 1 2 3
-q1 4 2 3 BC547A
-q2 3 4 1 BC557A
+q1 4 2 3 BC547B
+q2 3 4 1 BC557
 R1 4 1 4K
 
 .ENDS SZKPNP
 
 * C B E
 .SUBCKT SZKPNP 1 2 3
-Xq1 3 2 4 BD140
-q2 3 4 1 BC547A
+q1 3 2 4 BC327
+q2 3 4 1 BC547B
 c1 3 4 100p
 R1 4 1 4K
 .ENDS SZKPNP
