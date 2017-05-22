@@ -1,0 +1,39 @@
+DOA1PNP.CIR
+*
+.include ../models/generics/doa1pnp.model
+.include ../models/ci/ne5534.model
+
+
+* POWER SUPPLIES
+VCC	11	0	DC	+32
+VDD	12	0	DC	-32
+
+* SIGNAL SOURCE
+*V60	1	0	SIN(0	1V	1KHZ)   AC
+*V60 1 0  PULSE(500MV -500MV 0 0.000001 0.000001 0.005 .01)
+V60 1 0  PULSE(-500MV 500MV 10NS 10NS 10NS 0.0005 .001)
+*V60	1	0	DC       .001	
+
+* v+ v- Vcc Vdd  o 
+xp1 1 8 11 12 7   doa1PNP 
+
+RF1 7 8 60000
+RF2 8 0 3000
+
+C1 7 9 100u
+Rl 9 0 600
+
+* ANALYSIS
+.TRAN .01m 100MS
+.AC 	DEC 	5 10Hz 10KHz
+.PLOT	AC 	VM(7)
+*
+
+.control
+run
+ plot v(7) 
+ plot v(7) xlimit 0.0009 0.0011
+.endc
+
+
+

@@ -1,0 +1,23 @@
+.include ../components/BD140.LIB 
+.include ../components/1N4148B.model 
+
+* VCC VDD v+ v-
+.SUBCKT DIFFSTAGEPNP 1 2 3 4 5 6 
+
+* I = 4 mA
+RECS 1 9 150
+D1 1 10 1N4148B
+D2 10 8 1N4148B
+RPCS 8 2 18K
+
+XQCS 7 8 9 BD140
+
+XQ1 6 4 7 BD140
+XQ2 5 3 7 BD140
+
+RE1 2 6 1250
+RE2 2 5 1250
+
+
+
+.ENDS

@@ -1,0 +1,44 @@
+DIFFSTAGEPNP.CIR
+*
+.include ../models/generics/diffStagePNP.model
+.include ../models/ci/ne5534.model
+
+
+* POWER SUPPLIES
+VCC	11	0	DC	+15
+VDD	12	0	DC	-15
+
+* SIGNAL SOURCE
+*V60	1	0	SIN(0	1V	1KHZ)   AC
+*V60 1 0  PULSE(500MV -500MV 0 0.000001 0.000001 0.005 .01)
+V60 1 0  PULSE(-500MV 500MV 10NS 10NS 10NS 0.0005 .001)
+*V60	1	0	DC       .001	
+
+* Vcc Vdd v+ v- o+ o- 
+xp1 11 12 1 8 5 6  diffStagePNP 
+
+xopamp1 6 5 11 12 7 21 22  NE5534
+
+RF1 7 8 10000
+RF2 8 0 1000
+
+RC 21 22 100K
+
+
+
+
+* ANALYSIS
+.TRAN .01m 2mm
+.AC 	DEC 	5 10Hz 10KHz
+.PLOT	AC 	VM(7)
+*
+
+.control
+run
+ plot   v(5) v(6) 
+ plot v(7) 
+ *plot v(5) - v(6) xlimit 0.0004995 0.0005005
+.endc
+
+
+
