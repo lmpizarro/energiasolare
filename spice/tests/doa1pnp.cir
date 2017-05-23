@@ -22,7 +22,7 @@ xp1 1 8 11 12 7   doa1PNP
 RF1 7 8 60000
 RF2 8 100 3000
 C2 100 0 100u
-CF1 7 8 10p
+*CF1 7 8 20p
 
 C1 7 9 100u
 Rl 9 0 600
@@ -36,6 +36,7 @@ Rl 9 0 600
 .control
 run
  plot v(9) 
+ *plot v(7)
  AC 	DEC 	10 1Hz 1000KHz
  plot vdb(9) 
 .endc
