@@ -1,17 +1,17 @@
-Cmp-Mod V01 Created by CvPcb (22-Jun-2014 BZR 4027)-stable date = Wed 24 May 2017 10:15:14 AM -03
+Cmp-Mod V01 Created by CvPcb (22-Jun-2014 BZR 4027)-stable date = Wed 24 May 2017 02:10:59 PM -03
 
 BeginCmp
 TimeStamp = /59246817;
 Reference = C1;
 ValeurCmp = CP;
-IdModule  = C1V7;
+IdModule  = C1;
 EndCmp
 
 BeginCmp
 TimeStamp = /59246751;
 Reference = C2;
 ValeurCmp = CP;
-IdModule  = C1V7;
+IdModule  = C1;
 EndCmp
 
 BeginCmp
@@ -36,17 +36,24 @@ IdModule  = PIN_ARRAY_1;
 EndCmp
 
 BeginCmp
+TimeStamp = /5925B523;
+Reference = Out1;
+ValeurCmp = CONN_1;
+IdModule  = PIN_ARRAY_1;
+EndCmp
+
+BeginCmp
 TimeStamp = /592586EC;
-Reference = Q1;
+Reference = Q1CS3;
 ValeurCmp = BC557;
-IdModule  = TO92-123;
+IdModule  = TO92;
 EndCmp
 
 BeginCmp
 TimeStamp = /5924441E;
-Reference = Q2;
+Reference = Q2CS1;
 ValeurCmp = BC557;
-IdModule  = TO92-123;
+IdModule  = TO92;
 EndCmp
 
 BeginCmp
@@ -72,9 +79,9 @@ EndCmp
 
 BeginCmp
 TimeStamp = /59247390;
-Reference = Q6;
+Reference = Q6CS2;
 ValeurCmp = BC557;
-IdModule  = TO92-123;
+IdModule  = TO92;
 EndCmp
 
 BeginCmp
