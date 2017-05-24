@@ -3,7 +3,7 @@
   (general
     (links 32)
     (no_connects 32)
-    (area 129.537178 81.6864 213.0425 135.849404)
+    (area 130.172178 95.925596 213.0425 135.849404)
     (thickness 1.6)
     (drawings 11)
     (tracks 0)
@@ -747,7 +747,7 @@
   )
 
   (module TO92-123 (layer F.Cu) (tedit 4C5F51CE) (tstamp 59258787)
-    (at 166.37 92.71)
+    (at 134.62 111.76)
     (descr "Transistor TO92 brochage type BC237")
     (tags "TR TO92")
     (path /592586E3)
@@ -785,7 +785,7 @@
   )
 
   (module TO92-123 (layer F.Cu) (tedit 4C5F51CE) (tstamp 59258796)
-    (at 137.16 113.03)
+    (at 139.065 107.315)
     (descr "Transistor TO92 brochage type BC237")
     (tags "TR TO92")
     (path /592586EC)
