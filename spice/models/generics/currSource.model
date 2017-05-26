@@ -1,0 +1,32 @@
+.include ../components/1N4148B.model
+.include ../components/BC547B.model
+.include ../components/BC557.model
+
+
+* vcc vdd out
+.SUBCKT CURRSRCPNP 1 2 3  RI = 150 RB = 18000
+
+D1 1 10 1N4148
+D2 10 8 1N4148
+R1 2 8 {RB}
+
+Q1 3 8 9 BC557
+
+R2 1 9 {RI}
+
+.ENDS CURRSRCPNP
+
+* vcc vdd out
+.SUBCKT CURRSRCNPN 1 2 3  RI = 150 RB = 18000
+
+R1 1 8 {RB}
+D1 8 10 1N4148
+D2 10 2 1N4148
+
+Q1 3 8 9 BC547B
+
+R2 9 2 {RI}
+
+.ENDS CURRSRCNPN
+
+
