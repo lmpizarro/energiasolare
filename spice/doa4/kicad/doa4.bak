@@ -504,4 +504,22 @@ Wire Wire Line
 Wire Wire Line
 	6750 3400 6500 3400
 Connection ~ 6750 3400
+Connection ~ 6750 3500
+Connection ~ 6750 3300
+Connection ~ 7150 3300
+Connection ~ 7150 3500
+Connection ~ 7750 3600
+$Comp
+L C Cp1
+U 1 1 592DCC26
+P 5750 4000
+F 0 "Cp1" H 5750 4100 40  0000 L CNN
+F 1 "10p" H 5756 3915 40  0000 L CNN
+F 2 "~" H 5788 3850 30  0000 C CNN
+F 3 "~" H 5750 4000 60  0000 C CNN
+	1    5750 4000
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6000 3800 5750 3800
 $EndSCHEMATC
