@@ -1,0 +1,282 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:special
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:doa4-cache
+EELAYER 27 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date "30 may 2017"
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L BC557 Q5
+U 1 1 592DBDF2
+P 2950 2550
+F 0 "Q5" H 2950 2401 40  0000 R CNN
+F 1 "BC557" H 2950 2700 40  0000 R CNN
+F 2 "TO92" H 2850 2652 29  0000 C CNN
+F 3 "" H 2950 2550 60  0000 C CNN
+	1    2950 2550
+	-1   0    0    1   
+$EndComp
+$Comp
+L BC557 Q1
+U 1 1 592DBE09
+P 2450 2950
+F 0 "Q1" H 2450 2801 40  0000 R CNN
+F 1 "BC557" H 2450 3100 40  0000 R CNN
+F 2 "TO92" H 2350 3052 29  0000 C CNN
+F 3 "" H 2450 2950 60  0000 C CNN
+	1    2450 2950
+	1    0    0    1   
+$EndComp
+$Comp
+L BC557 Q2
+U 1 1 592DBE14
+P 3500 2950
+F 0 "Q2" H 3500 2801 40  0000 R CNN
+F 1 "BC557" H 3500 3100 40  0000 R CNN
+F 2 "TO92" H 3400 3052 29  0000 C CNN
+F 3 "" H 3500 2950 60  0000 C CNN
+	1    3500 2950
+	-1   0    0    1   
+$EndComp
+$Comp
+L BC547 Q3
+U 1 1 592DBE26
+P 2750 3150
+F 0 "Q3" H 2750 3001 40  0000 R CNN
+F 1 "BC547" H 2750 3300 40  0000 R CNN
+F 2 "TO92" H 2650 3252 29  0000 C CNN
+F 3 "" H 2750 3150 60  0000 C CNN
+	1    2750 3150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2550 2750 3400 2750
+Wire Wire Line
+	2850 2750 2850 2950
+$Comp
+L BC547 Q4
+U 1 1 592DBE41
+P 3200 3150
+F 0 "Q4" H 3200 3001 40  0000 R CNN
+F 1 "BC547" H 3200 3300 40  0000 R CNN
+F 2 "TO92" H 3100 3252 29  0000 C CNN
+F 3 "" H 3200 3150 60  0000 C CNN
+	1    3200 3150
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	3100 2750 3100 2950
+Connection ~ 2850 2750
+Connection ~ 3100 2750
+$Comp
+L R RCS1
+U 1 1 592DBEC2
+P 2850 2100
+F 0 "RCS1" V 2930 2100 40  0000 C CNN
+F 1 "2700" V 2857 2101 40  0000 C CNN
+F 2 "~" V 2780 2100 30  0000 C CNN
+F 3 "~" H 2850 2100 30  0000 C CNN
+	1    2850 2100
+	1    0    0    -1  
+$EndComp
+Connection ~ 2850 2350
+$Comp
+L DIODE D3
+U 1 1 592DBEDB
+P 3150 2350
+F 0 "D3" H 3150 2450 40  0000 C CNN
+F 1 "D14148" H 3150 2250 40  0000 C CNN
+F 2 "~" H 3150 2350 60  0000 C CNN
+F 3 "~" H 3150 2350 60  0000 C CNN
+	1    3150 2350
+	0    1    1    0   
+$EndComp
+$Comp
+L DIODE D4
+U 1 1 592DBF01
+P 3150 1950
+F 0 "D4" H 3150 2050 40  0000 C CNN
+F 1 "D1418" H 3150 1850 40  0000 C CNN
+F 2 "~" H 3150 1950 60  0000 C CNN
+F 3 "~" H 3150 1950 60  0000 C CNN
+	1    3150 1950
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2850 1850 2850 1750
+Wire Wire Line
+	2850 1750 3150 1750
+Text Label 3000 1750 0    60   ~ 0
+V+
+$Comp
+L R RPCS1
+U 1 1 592DBF52
+P 3400 2550
+F 0 "RPCS1" V 3480 2550 40  0000 C CNN
+F 1 "27000" V 3407 2551 40  0000 C CNN
+F 2 "~" V 3330 2550 30  0000 C CNN
+F 3 "~" H 3400 2550 30  0000 C CNN
+	1    3400 2550
+	0    -1   -1   0   
+$EndComp
+Connection ~ 3150 2550
+Text Label 3650 2550 0    60   ~ 0
+V-
+$Comp
+L R RSZ1
+U 1 1 592DBFEC
+P 2550 3400
+F 0 "RSZ1" V 2630 3400 40  0000 C CNN
+F 1 "3800" V 2557 3401 40  0000 C CNN
+F 2 "~" V 2480 3400 30  0000 C CNN
+F 3 "~" H 2550 3400 30  0000 C CNN
+	1    2550 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L R RSZ2
+U 1 1 592DBFF8
+P 3400 3400
+F 0 "RSZ2" V 3480 3400 40  0000 C CNN
+F 1 "3800" V 3407 3401 40  0000 C CNN
+F 2 "~" V 3330 3400 30  0000 C CNN
+F 3 "~" H 3400 3400 30  0000 C CNN
+	1    3400 3400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3100 3350 3100 3850
+Wire Wire Line
+	3100 3650 3400 3650
+Wire Wire Line
+	2850 3350 2850 3650
+Wire Wire Line
+	2850 3650 2550 3650
+$Comp
+L BC547 Q6
+U 1 1 592DC058
+P 2650 3850
+F 0 "Q6" H 2650 3701 40  0000 R CNN
+F 1 "BC547" H 2650 4000 40  0000 R CNN
+F 2 "TO92" H 2550 3952 29  0000 C CNN
+F 3 "" H 2650 3850 60  0000 C CNN
+	1    2650 3850
+	-1   0    0    -1  
+$EndComp
+$Comp
+L BC547 Q7
+U 1 1 592DC05E
+P 3300 3850
+F 0 "Q7" H 3300 3701 40  0000 R CNN
+F 1 "BC547" H 3300 4000 40  0000 R CNN
+F 2 "TO92" H 3200 3952 29  0000 C CNN
+F 3 "" H 3300 3850 60  0000 C CNN
+	1    3300 3850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3100 3850 2850 3850
+Connection ~ 3100 3650
+Wire Wire Line
+	3400 4050 2550 4050
+Text Label 3050 4050 0    60   ~ 0
+V-
+Wire Wire Line
+	2250 2950 1900 2950
+Wire Wire Line
+	3700 2950 4000 2950
+Text Label 3900 2950 0    60   ~ 0
+In-
+Text Label 2000 2950 0    60   ~ 0
+In+
+$Comp
+L DIODE D1
+U 1 1 592DC1BC
+P 2000 3150
+F 0 "D1" H 2000 3250 40  0000 C CNN
+F 1 "D1N4148" H 2000 3050 40  0000 C CNN
+F 2 "~" H 2000 3150 60  0000 C CNN
+F 3 "~" H 2000 3150 60  0000 C CNN
+	1    2000 3150
+	0    -1   -1   0   
+$EndComp
+$Comp
+L DIODE D2
+U 1 1 592DC1D6
+P 2150 3150
+F 0 "D2" H 2150 3250 40  0000 C CNN
+F 1 "D1N4148" H 2150 3050 40  0000 C CNN
+F 2 "~" H 2150 3150 60  0000 C CNN
+F 3 "~" H 2150 3150 60  0000 C CNN
+	1    2150 3150
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1850 3350 2150 3350
+Connection ~ 2000 3350
+Text Label 1900 3350 0    60   ~ 0
+In-
+Connection ~ 2850 1850
+Connection ~ 3150 1800
+Connection ~ 3150 2150
+Connection ~ 2550 3650
+Connection ~ 2550 4050
+Connection ~ 3400 4050
+Connection ~ 3100 3850
+Connection ~ 2850 3850
+Connection ~ 2150 2950
+Connection ~ 2250 2950
+Connection ~ 2000 2950
+Connection ~ 2150 3350
+Connection ~ 2550 2750
+Connection ~ 3400 2750
+Connection ~ 2850 2950
+Connection ~ 3100 2950
+Connection ~ 3100 3350
+Connection ~ 2850 3350
+Connection ~ 2550 3150
+Text Label 2850 3650 0    60   ~ 0
+ODiff
+Connection ~ 3400 3150
+Connection ~ 3400 3650
+Connection ~ 3700 2950
+$EndSCHEMATC
