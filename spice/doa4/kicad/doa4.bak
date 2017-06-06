@@ -535,9 +535,9 @@ $Comp
 L C-RESCUE-doa4 C5
 U 1 1 593180A3
 P 8400 4700
-F 0 "C5" H 8400 4800 40  0000 L CNN
+F 0 "C5" H 8400 4800 40  0001 L CNN
 F 1 "0.1u" H 8406 4615 40  0000 L CNN
-F 2 "Doa4FPLibrary:C_Rect_L4.6mm_W3.0mm_P2.50mm_MKS02_FKP02_Doa4" H 8438 4550 30  0000 C CNN
+F 2 "Doa4FPLibrary:C_Rect_L4.6mm_W3.0mm_P2.50mm_MKS02_FKP02_Doa4" H 8438 4550 30  0001 C CNN
 F 3 "~" H 8400 4700 60  0000 C CNN
 	1    8400 4700
 	1    0    0    -1  
@@ -578,6 +578,29 @@ Wire Wire Line
 	4100 2000 8400 2000
 Text Label 3850 3000 0    60   ~ 0
 Emiter
-Entry Wire Line
-	8450 2250 8550 2350
+$Comp
+L CONN_01X06 J1
+U 1 1 5936F09F
+P 8950 2450
+F 0 "J1" H 8950 2800 50  0000 C CNN
+F 1 "CONN_01X06" V 9050 2450 50  0000 C CNN
+F 2 "" H 8950 2450 50  0001 C CNN
+F 3 "" H 8950 2450 50  0001 C CNN
+	1    8950 2450
+	1    0    0    -1  
+$EndComp
+Text Label 8750 2200 0    60   ~ 0
+V+
+Text Label 8400 3900 0    60   ~ 0
+GND
+Text Label 8750 2300 0    60   ~ 0
+GND
+Text Label 8750 2400 0    60   ~ 0
+V-
+Text Label 8750 2500 0    60   ~ 0
+Out
+Text Label 8750 2600 0    60   ~ 0
+In-
+Text Label 8750 2700 0    60   ~ 0
+In+
 $EndSCHEMATC
