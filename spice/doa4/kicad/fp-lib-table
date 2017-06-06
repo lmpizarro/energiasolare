@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name Doa4FPLibrary)(type KiCad)(uri "$(KIPRJMOD)/Doa4FPLibrary.pretty")(options "")(descr ""))
+)
