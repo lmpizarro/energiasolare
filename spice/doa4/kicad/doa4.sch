@@ -89,11 +89,7 @@ F 3 "" H 4000 3400 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3800 3000 4100 3000
-Wire Wire Line
-	4100 3000 4350 3000
-Wire Wire Line
-	4350 3000 4650 3000
+	3800 3000 4650 3000
 Wire Wire Line
 	4100 3000 4100 3200
 $Comp
@@ -186,9 +182,7 @@ F 3 "~" H 4650 3650 30  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4350 3600 4350 3900
-Wire Wire Line
-	4350 3900 4350 4700
+	4350 3600 4350 4700
 Wire Wire Line
 	4350 3900 4650 3900
 Wire Wire Line
@@ -221,23 +215,11 @@ Wire Wire Line
 	4350 4700 4100 4700
 Connection ~ 4350 3900
 Wire Wire Line
-	3800 4900 4650 4900
-Wire Wire Line
-	4650 4900 5350 4900
-Wire Wire Line
-	5350 4900 6500 4900
-Wire Wire Line
-	6500 4900 7250 4900
-Wire Wire Line
-	7250 4900 8400 4900
+	3800 4900 8400 4900
 Text Label 4300 4300 0    60   ~ 0
 V-
 Wire Wire Line
-	3150 3200 3250 3200
-Wire Wire Line
-	3250 3200 3400 3200
-Wire Wire Line
-	3400 3200 3500 3200
+	3150 3200 3500 3200
 Wire Wire Line
 	4950 3200 5250 3200
 Text Label 5150 3200 0    60   ~ 0
@@ -267,9 +249,7 @@ F 3 "~" H 3400 3400 60  0000 C CNN
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	3100 3600 3250 3600
-Wire Wire Line
-	3250 3600 3400 3600
+	3100 3600 3400 3600
 Connection ~ 3250 3600
 Text Label 3150 3600 0    60   ~ 0
 In-
@@ -298,9 +278,7 @@ Connection ~ 4650 3400
 Connection ~ 4650 3900
 Connection ~ 4950 3200
 Wire Wire Line
-	4400 2800 4550 2800
-Wire Wire Line
-	4550 2800 4700 2800
+	4400 2800 4700 2800
 Connection ~ 4700 2800
 Text Label 4450 2800 0    60   ~ 0
 VrefCS
@@ -472,9 +450,7 @@ Wire Wire Line
 Wire Wire Line
 	6950 3800 6500 3800
 Wire Wire Line
-	7750 3200 7750 3400
-Wire Wire Line
-	7750 3400 7750 3600
+	7750 3200 7750 3600
 Wire Wire Line
 	7250 2000 7250 2800
 Connection ~ 6500 2000
@@ -491,9 +467,7 @@ Connection ~ 6950 3000
 Connection ~ 6500 4900
 Connection ~ 7250 4000
 Wire Wire Line
-	7150 3400 7750 3400
-Wire Wire Line
-	7750 3400 7950 3400
+	7150 3400 7950 3400
 Connection ~ 7750 3400
 Text Label 7900 3400 0    60   ~ 0
 Out
@@ -521,14 +495,10 @@ F 3 "~" H 6950 3500 60  0000 C CNN
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	7150 3300 7150 3400
-Wire Wire Line
-	7150 3400 7150 3500
+	7150 3300 7150 3500
 Connection ~ 7150 3400
 Wire Wire Line
-	6750 3300 6750 3400
-Wire Wire Line
-	6750 3400 6750 3500
+	6750 3300 6750 3500
 Wire Wire Line
 	6750 3400 6500 3400
 Connection ~ 6750 3400
@@ -575,11 +545,7 @@ $EndComp
 Connection ~ 7250 2000
 Connection ~ 7250 4900
 Wire Wire Line
-	8400 4500 8400 4150
-Wire Wire Line
-	8400 4150 8400 3400
-Wire Wire Line
-	8400 3400 8400 2400
+	8400 2400 8400 4500
 $Comp
 L GND-RESCUE-doa4 #PWR01
 U 1 1 593181CB
@@ -609,13 +575,7 @@ F 3 "" H 8400 4150 60  0000 C CNN
 $EndComp
 Connection ~ 8400 4150
 Wire Wire Line
-	4100 2000 4400 2000
-Wire Wire Line
-	4400 2000 6500 2000
-Wire Wire Line
-	6500 2000 7250 2000
-Wire Wire Line
-	7250 2000 8400 2000
+	4100 2000 8400 2000
 Text Label 3850 3000 0    60   ~ 0
 Emiter
 $Comp
@@ -655,4 +615,5 @@ F 3 "~" H 5750 3800 30  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 Connection ~ 5950 3800
+Connection ~ 5500 4200
 $EndSCHEMATC
