@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/lpizarro/Documents/fv/energiasolare/spice/doa4/kicad/doa4.sch)
-    (date "Wed 07 Jun 2017 12:59:50 PM -03")
+    (date "Thu 08 Jun 2017 12:18:41 PM -03")
     (tool "Eeschema 4.0.6")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
