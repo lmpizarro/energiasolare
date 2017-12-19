@@ -1,0 +1,77 @@
+powersupp.CIR 
+
+
+
+VS	1	0	AC 1	SIN(0 30.1V 50HZ)
+
+
+.include ../models/components/1n4148.model
+.include ../models/components/BC547B.model
+.include ../models/components/BC557.model
+.include ../models/components/DZ24.model
+
+xD1 1 2  1N4148 
+C1  0 2  1000u 
+c2  3 0  1000u 
+xD3 3 1  1N4148
+R1 0 2 2k
+R2 0 3 2k
+c3 0 2 1000u
+c4 3 0 1000u
+
+xDou 1 0 5 DOUBLER
+xReg  5 0 6 capmultpos
+R3 6 0 3K
+
+.SUBCKT  DOUBLER 1 0 5
+c3  1 4  1000u 
+xD4 0 4  1N4148
+c4  5 0  1000u 
+xD5 4 5  1N4148
+.ENDS
+
+.SUBCKT  TRIPLER 1 0 4
+xD3 1 2 1N4148
+c3  0 2  1000u 
+xD4 2 3  1N4148
+c4  2 4  1000u 
+c2  1 3  1000u 
+xD5 3 4 1N4148
+.ENDS
+
+
+.SUBCKT  capmultpos 1 0 7
+R1 1 4 10k
+R2 2 4 10K
+R5 1 11 1k
+
+C1 4 0 10u
+QC3 3 11 1 BC557 
+QC1 11 2 3 BC547B
+QC2 2 6 5 BC547B
+
+R3 7 6 10K
+R4 6 0 10K
+
+DZ1 0 5 DZ24
+Vz 5 0 24
+c5 5 0 10u
+R8 3 5 10K
+D1 3 7 1N4148
+D2 3 1 1N4148
+C6 2 6 220p
+C7 7 0 100u
+.ENDS
+
+
+*
+.TRAN	100US 280MS
+.PROBE
+
+
+.control
+run
+plot v(2) v(3) v(6)
+ac dec 10 1 100000000
+.endc
+.END
