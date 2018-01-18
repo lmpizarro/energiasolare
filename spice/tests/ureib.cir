@@ -1,0 +1,64 @@
+UREI.CIR
+
+.include ../models/components/BC547B.model
+.include ../models/components/BC557.model
+.include ../models/components/BC557b.model
+.include ../models/components/1n4148.model
+.include ../models/components/BD140.LIB
+.include ../models/components/BD139.SP3
+
+
+* INPUT VOLTAGE
+VCC	12	0	DC	24 
+VDD	11	0	DC	-24
+Vin1	1	0	AC  SIN(0  0.20VPEAK  1.0KHZ)
+*Vin2	2	0	AC  SIN(0  -0.001VPEAK  1.0KHZ)
+
+
+XQ1 11 2 3  BD140
+XQ2 4 1 3 BD140
+R1 3 12 47K
+
+R2 42 11 2.5K
+R6 0 40 920K
+D3 40 41 1N4148
+D4 41 11 1N4148
+QCS1 4 40 42 BC547B
+
+
+R3 12 7 10k
+
+Q3 5 4 11 BC547B
+
+
+D1 7 6 1N4148
+D2 6 5 1N4148
+Q4 12 7 8 BD139
+R4 8 10 47
+R5 9 10 47
+XQ5 11 5 9 BD140
+
+*RC 4 50 390 
+*CC 50 5 47p
+
+RF1 10 2 3K
+C1b 10 2 90p
+RF2 2 14 30
+C1 14 0 1000u
+
+RL 10 0 600
+
+
+
+.TRAN 	0.001MS  	10.0MS
+.ac dec 10 1 10MHZ
+.control
+run
+plot v(1)
+plot v(10)
+ac dec 10 1 100000000
+plot vdb(10)
+.endc
+
+
+
