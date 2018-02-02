@@ -1,0 +1,28 @@
+.include ../models/components/irf510.lib
+.include ../models/components/1n4148.model
+* http://www.ecircuitcenter.com/Circuits/logic_sw/logic_sw.htm
+
+VCC	12	0	DC	24 
+
+*Vin 1 0 pulse(0 5 0 1e-9 1e-9 25e-6 30e-6)
+Vin 1 0 pulse(0 5 0 1e-9 1e-9 5e-6 30e-6)
+
+
+XM1 2 1 0 irf510
+L1 12 2 100u
+D1 2 3 1N4148
+C1 3 0 100u
+R1 3 0 1000
+
+.TRAN 	0.001MS  	10.1MS
+.ac dec 10 1 10MHZ
+.control
+run
+plot v(1)
+*plot v(10)
+*ac dec 10 1 100000000
+*plot vdb(10)
+.endc
+
+
+
